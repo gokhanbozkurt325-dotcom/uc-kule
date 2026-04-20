@@ -112,7 +112,7 @@ function WeatherWidget() {
         <div style={{display:"flex",alignItems:"center",gap:10}}>
           <div style={{fontSize:38,lineHeight:1}}>{weather.icon}</div>
           <div>
-            <div style={{fontSize:10,color:"#9CA3AF",fontWeight:600,textTransform:"uppercase",letterSpacing:".5px"}}>📍 Burdur</div>
+            <div style={{fontSize:10,color:"#9CA3AF",fontWeight:600,textTransform:"uppercase",letterSpacing:".5px"}}>📍 Üç Kule</div>
             <div style={{fontSize:26,fontWeight:800,color:"#111827",lineHeight:1}}>{weather.temp}°<span style={{fontSize:13,color:"#6B7280"}}>C</span></div>
             <div style={{fontSize:11,color:"#6B7280"}}>{weather.desc}</div>
           </div>
@@ -162,393 +162,6 @@ function GameHub() {
             <div style={{fontSize:10,color:"#7C3AED",marginTop:4}}>🧠 Hafıza oyunu</div>
           </div>
         </button>
-      </div>
-    </div>
-  );
-}
-
-function GoatSlingGame() {
-  /* ── Sabitler ── */
-  var GRAVITY = 0.38;
-  var GOAT_TYPES = [
-    {id:"white",  emoji:"🐐", name:"Beyaz",     mass:1.0, speed:1.0, radius:18, color:"#fff"},
-    {id:"brown",  emoji:"🦬", name:"Kahverengi", mass:1.6, speed:0.7, radius:22, color:"#8B4513"},
-    {id:"black",  emoji:"🐏", name:"Siyah",      mass:0.7, speed:1.4, radius:15, color:"#222"},
-  ];
-
-  var LEVELS = [
-    // Level 1
-    {targets:[{x:260,y:310,emoji:"👮",hp:1},{x:300,y:310,emoji:"👮",hp:1},{x:280,y:274,emoji:"🪵",hp:1}], blocks:[{x:255,y:274,w:70,h:36,emoji:"🧱"}], goats:[0,0]},
-    // Level 2
-    {targets:[{x:240,y:310,emoji:"👮",hp:1},{x:290,y:310,emoji:"👮",hp:1},{x:330,y:310,emoji:"👮",hp:1},{x:310,y:270,emoji:"🔒",hp:1}], blocks:[{x:235,y:274,w:40,h:36,emoji:"🧱"},{x:285,y:274,w:55,h:36,emoji:"🧱"}], goats:[0,0,1]},
-    // Level 3
-    {targets:[{x:220,y:310,emoji:"👮",hp:1},{x:270,y:310,emoji:"👮",hp:1},{x:320,y:310,emoji:"👮",hp:1},{x:245,y:270,emoji:"👮",hp:1},{x:295,y:270,emoji:"🔒",hp:1}], blocks:[{x:215,y:274,w:50,h:36,emoji:"🧱"},{x:265,y:274,w:65,h:36,emoji:"⛓️"}], goats:[0,1,0,2]},
-    // Level 4
-    {targets:[{x:230,y:310,emoji:"👮",hp:2},{x:290,y:310,emoji:"👮",hp:2},{x:340,y:310,emoji:"🗼",hp:1},{x:260,y:266,emoji:"🔒",hp:1}], blocks:[{x:225,y:270,w:75,h:40,emoji:"🧱"},{x:335,y:274,w:36,h:36,emoji:"🪵"}], goats:[0,1,2,1]},
-    // Level 5
-    {targets:[{x:210,y:310,emoji:"👮",hp:1},{x:260,y:310,emoji:"👮",hp:2},{x:310,y:310,emoji:"👮",hp:1},{x:350,y:310,emoji:"🗼",hp:2},{x:235,y:266,emoji:"👮",hp:1},{x:285,y:266,emoji:"🔒",hp:1}], blocks:[{x:205,y:270,w:50,h:40,emoji:"⛓️"},{x:305,y:270,w:55,h:40,emoji:"🧱"},{x:345,y:274,w:36,h:36,emoji:"🪵"}], goats:[2,1,0,2,1]},
-    // Level 6
-    {targets:[{x:220,y:310,emoji:"👮",hp:2},{x:270,y:310,emoji:"👮",hp:2},{x:320,y:310,emoji:"👮",hp:2},{x:245,y:270,emoji:"🔒",hp:2},{x:295,y:270,emoji:"🗼",hp:1},{x:270,y:230,emoji:"👮",hp:1}], blocks:[{x:215,y:230,w:120,h:40,emoji:"🧱"},{x:235,y:192,w:80,h:38,emoji:"⛓️"}], goats:[1,2,0,1,2,0]},
-    // Level 7
-    {targets:[{x:200,y:310,emoji:"👮",hp:2},{x:250,y:310,emoji:"👮",hp:2},{x:300,y:310,emoji:"👮",hp:2},{x:350,y:310,emoji:"🗼",hp:3},{x:225,y:265,emoji:"🔒",hp:2},{x:275,y:265,emoji:"👮",hp:1},{x:325,y:265,emoji:"👮",hp:2}], blocks:[{x:195,y:270,w:50,h:40,emoji:"🧱"},{x:245,y:270,w:65,h:40,emoji:"🧱"},{x:320,y:270,w:40,h:40,emoji:"⛓️"}], goats:[2,1,2,0,1,2]},
-    // Level 8
-    {targets:[{x:210,y:310,emoji:"👮",hp:2},{x:260,y:310,emoji:"👮",hp:2},{x:310,y:310,emoji:"👮",hp:2},{x:355,y:310,emoji:"🗼",hp:3},{x:235,y:265,emoji:"🔒",hp:2},{x:285,y:265,emoji:"🔒",hp:2},{x:260,y:220,emoji:"🗼",hp:2}], blocks:[{x:205,y:225,w:165,h:40,emoji:"🧱"},{x:225,y:186,w:75,h:38,emoji:"⛓️"}], goats:[1,2,1,2,0,1]},
-    // Level 9
-    {targets:[{x:195,y:310,emoji:"👮",hp:3},{x:245,y:310,emoji:"👮",hp:3},{x:295,y:310,emoji:"👮",hp:2},{x:345,y:310,emoji:"🗼",hp:3},{x:220,y:262,emoji:"🔒",hp:2},{x:270,y:262,emoji:"👮",hp:2},{x:320,y:262,emoji:"🔒",hp:2},{x:245,y:215,emoji:"🗼",hp:2}], blocks:[{x:190,y:265,w:55,h:45,emoji:"⛓️"},{x:265,y:265,w:65,h:45,emoji:"🧱"},{x:240,y:220,w:50,h:42,emoji:"🪵"}], goats:[2,2,1,2,1,2]},
-    // Level 10
-    {targets:[{x:190,y:310,emoji:"👮",hp:3},{x:240,y:310,emoji:"👮",hp:3},{x:290,y:310,emoji:"👮",hp:3},{x:340,y:310,emoji:"🗼",hp:4},{x:215,y:260,emoji:"🔒",hp:3},{x:265,y:260,emoji:"🔒",hp:3},{x:315,y:260,emoji:"🗼",hp:3},{x:240,y:210,emoji:"👮",hp:2},{x:290,y:210,emoji:"👮",hp:2},{x:265,y:162,emoji:"🗼",hp:2}], blocks:[{x:185,y:262,w:60,h:48,emoji:"🧱"},{x:260,y:262,w:65,h:48,emoji:"⛓️"},{x:232,y:212,w:100,h:46,emoji:"🧱"},{x:255,y:166,w:40,h:44,emoji:"⛓️"}], goats:[2,2,1,2,1,2,0,2]},
-  ];
-
-  var W = 360, H = 430;
-  var SLING_X = 80, SLING_Y = 310;
-
-  /* ── State ── */
-  const canvasRef = React.useRef(null);
-  const st = React.useRef(null);
-  const animRef = React.useRef(null);
-  const [ui, setUi] = React.useState({score:0,goatsLeft:0,levelDone:false,levelFail:false,goatIdx:0});
-  const [screen, setScreen] = React.useState("levelsel"); // levelsel | game | gameover
-  const [curLevel, setCurLevel] = React.useState(0);
-  const [savedLevel, setSavedLevel] = React.useState(0);
-  const [selGoatType, setSelGoatType] = React.useState(0);
-
-  /* ── LocalStorage bölüm kaydı ── */
-  React.useEffect(function(){
-    try {
-      var saved = localStorage.getItem("goat_sling_level");
-      if(saved) setSavedLevel(parseInt(saved)||0);
-    } catch(e){}
-  },[]);
-
-  var saveProgress = function(lvl) {
-    try { localStorage.setItem("goat_sling_level", String(lvl)); } catch(e){}
-    setSavedLevel(lvl);
-  };
-
-  /* ── Fizik Başlat ── */
-  var initLevel = function(lvlIdx) {
-    var lvl = LEVELS[lvlIdx];
-    var goatQueue = lvl.goats.slice();
-    var gt = GOAT_TYPES[goatQueue[0]||0];
-    st.current = {
-      goat: {x:SLING_X, y:SLING_Y, r:gt.radius, vx:0, vy:0, active:false, launched:false, bounce:0},
-      goatQueue: goatQueue,
-      goatQueueIdx: 0,
-      gt: gt,
-      targets: lvl.targets.map(function(t,i){return Object.assign({},t,{id:i,w:34,h:34,curHp:t.hp});}),
-      blocks: (lvl.blocks||[]).map(function(b){return Object.assign({},b,{alive:true});}),
-      particles: [],
-      score: 0,
-      dragging: false,
-      dragPos: null,
-      launched: false,
-      done: false,
-      fail: false,
-      ground: H - 55,
-    };
-    setUi({score:0, goatsLeft:goatQueue.length, levelDone:false, levelFail:false, goatIdx:0});
-  };
-
-  var nextGoat = function(s) {
-    s.goatQueueIdx++;
-    if(s.goatQueueIdx >= s.goatQueue.length) {
-      s.fail = true; return;
-    }
-    var gt = GOAT_TYPES[s.goatQueue[s.goatQueueIdx]||0];
-    s.gt = gt;
-    s.goat = {x:SLING_X, y:SLING_Y, r:gt.radius, vx:0, vy:0, active:false, launched:false, bounce:0};
-    s.launched = false; s.dragging = false; s.dragPos = null;
-  };
-
-  /* ── Canvas Loop ── */
-  var loop = function() {
-    var canvas = canvasRef.current;
-    if(!canvas) return;
-    var ctx = canvas.getContext("2d");
-    var s = st.current;
-    if(!s) { animRef.current = requestAnimationFrame(loop); return; }
-
-    /* Fizik */
-    if(s.launched && !s.done && !s.fail) {
-      var g = s.goat;
-      g.x += g.vx; g.y += g.vy; g.vy += GRAVITY; g.vx *= 0.995;
-
-      /* Zemin */
-      if(g.y + g.r > s.ground) {
-        g.y = s.ground - g.r; g.vy *= -0.35; g.vx *= 0.6; g.bounce++;
-        if(g.bounce > 2 || Math.abs(g.vy)<0.8) { nextGoat(s); }
-      }
-      /* Ekran dışı */
-      if(g.x > W+60 || g.x < -60) { nextGoat(s); }
-
-      /* Hedef çarpışma */
-      s.targets.forEach(function(t){
-        if(t.curHp<=0) return;
-        if(g.x+g.r>t.x && g.x-g.r<t.x+t.w && g.y+g.r>t.y && g.y-g.r<t.y+t.h){
-          t.curHp -= s.gt.mass;
-          var pts = Math.ceil(50 * s.gt.mass);
-          s.score += pts;
-          if(t.curHp<=0){
-            s.score += 100;
-            for(var i=0;i<10;i++){
-              var a=Math.random()*Math.PI*2;
-              s.particles.push({x:t.x+t.w/2,y:t.y+t.h/2,vx:Math.cos(a)*4,vy:Math.sin(a)*4-2,life:1,r:6,c:"#FFD700"});
-            }
-          }
-          g.vx *= (0.5/s.gt.mass); g.vy *= (0.5/s.gt.mass);
-          setUi(function(u){return Object.assign({},u,{score:s.score});});
-        }
-      });
-
-      /* Blok çarpışma */
-      s.blocks.forEach(function(b){
-        if(!b.alive) return;
-        if(g.x+g.r>b.x && g.x-g.r<b.x+b.w && g.y+g.r>b.y && g.y-g.r<b.y+b.h){
-          g.vx *= (0.4/s.gt.mass); g.vy *= (0.4/s.gt.mass);
-        }
-      });
-
-      /* Partiküller */
-      s.particles = s.particles.filter(function(p){return p.life>0;});
-      s.particles.forEach(function(p){p.x+=p.vx;p.y+=p.vy;p.vy+=0.15;p.life-=0.035;});
-
-      /* Kazandı mı? */
-      var allDead = s.targets.every(function(t){return t.curHp<=0;});
-      if(allDead && !s.done){ s.done=true; setUi(function(u){return Object.assign({},u,{levelDone:true,score:s.score});}); }
-      if(s.fail && !s.done){ setUi(function(u){return Object.assign({},u,{levelFail:true});}); }
-    }
-
-    /* Çiz */
-    // Gökyüzü
-    var grd = ctx.createLinearGradient(0,0,0,H);
-    grd.addColorStop(0,"#87CEEB"); grd.addColorStop(1,"#C8E6C9");
-    ctx.fillStyle=grd; ctx.fillRect(0,0,W,H);
-    // Bulutlar
-    ctx.fillStyle="rgba(255,255,255,.75)";
-    [[55,55,38],[160,38,26],[290,65,32]].forEach(function(b){
-      ctx.beginPath();ctx.arc(b[0],b[1],b[2],0,Math.PI*2);ctx.fill();
-      ctx.beginPath();ctx.arc(b[0]+25,b[1]+6,b[2]-10,0,Math.PI*2);ctx.fill();
-    });
-    // Arka plan - çiftlik
-    ctx.fillStyle="#2D5A1B"; ctx.fillRect(0,H-55,W,55);
-    ctx.fillStyle="#3D7A2B"; ctx.fillRect(0,H-57,W,4);
-    // Çiftlik çitleri arka planda
-    ctx.strokeStyle="rgba(100,60,20,.3)"; ctx.lineWidth=2;
-    for(var fx=160;fx<W;fx+=18){
-      ctx.beginPath();ctx.moveTo(fx,H-55);ctx.lineTo(fx,H-75);ctx.stroke();
-    }
-    ctx.beginPath();ctx.moveTo(160,H-68);ctx.lineTo(W,H-68);ctx.stroke();
-
-    // Sapan
-    ctx.strokeStyle="#6B3A1F"; ctx.lineWidth=6;
-    ctx.beginPath();ctx.moveTo(SLING_X-14,SLING_Y+12);ctx.lineTo(SLING_X-14,SLING_Y-44);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(SLING_X+14,SLING_Y+12);ctx.lineTo(SLING_X+14,SLING_Y-44);ctx.stroke();
-    // Sapan lastiği
-    var gx=s.goat.x, gy=s.goat.y;
-    ctx.strokeStyle="#C0824A"; ctx.lineWidth=3;
-    if(!s.launched){
-      ctx.beginPath();ctx.moveTo(SLING_X-14,SLING_Y-44);ctx.lineTo(gx,gy);ctx.stroke();
-      ctx.beginPath();ctx.moveTo(SLING_X+14,SLING_Y-44);ctx.lineTo(gx,gy);ctx.stroke();
-    }
-
-    // Bloklar
-    s.blocks.forEach(function(b){
-      if(!b.alive) return;
-      ctx.font=b.h+"px serif";
-      ctx.fillText(b.emoji,b.x,b.y+b.h-4);
-    });
-
-    // Hedefler
-    s.targets.forEach(function(t){
-      if(t.curHp<=0) return;
-      ctx.font=t.h+"px serif";
-      ctx.fillText(t.emoji,t.x,t.y+t.h-2);
-      // HP bar
-      if(t.hp>1){
-        ctx.fillStyle="rgba(0,0,0,.3)";ctx.fillRect(t.x,t.y-8,t.w,5);
-        ctx.fillStyle="#EF4444";ctx.fillRect(t.x,t.y-8,t.w*(t.curHp/t.hp),5);
-      }
-    });
-
-    // Partiküller
-    s.particles.forEach(function(p){
-      ctx.globalAlpha=p.life; ctx.fillStyle=p.c;
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r*p.life,0,Math.PI*2);ctx.fill();
-    }); ctx.globalAlpha=1;
-
-    // Yön çizgisi
-    if(s.dragging && !s.launched){
-      var dx=SLING_X-gx, dy=SLING_Y-gy;
-      var pvx=dx*0.3*s.gt.speed, pvy=dy*0.3*s.gt.speed;
-      ctx.strokeStyle="rgba(255,220,0,.55)"; ctx.lineWidth=2; ctx.setLineDash([5,5]);
-      ctx.beginPath(); ctx.moveTo(gx,gy);
-      var tx=gx,ty=gy,tvx=pvx,tvy=pvy;
-      for(var i=0;i<25;i++){tx+=tvx;ty+=tvy;tvy+=GRAVITY;ctx.lineTo(tx,ty);if(ty>s.ground)break;}
-      ctx.stroke(); ctx.setLineDash([]);
-    }
-
-    // Keçi
-    if(!s.fail || s.goat.bounce<3){
-      ctx.font=(s.goat.r*2.4)+"px serif";
-      ctx.fillText(s.gt.emoji, gx-s.goat.r, gy+s.goat.r*0.8);
-    }
-
-    // Skor
-    ctx.fillStyle="rgba(0,0,0,.45)"; ctx.fillRect(4,4,110,28); ctx.fillStyle="#fff";
-    ctx.font="bold 13px Poppins,sans-serif";
-    ctx.fillText("🏆 "+s.score, 10, 22);
-
-    // Kalan keçi
-    var rem = s.goatQueue.length - s.goatQueueIdx;
-    ctx.fillStyle="rgba(0,0,0,.45)"; ctx.fillRect(W-80,4,76,28); ctx.fillStyle="#fff";
-    ctx.font="13px serif";
-    var goatIcons="";
-    for(var gi=0;gi<Math.min(rem,5);gi++) goatIcons+=GOAT_TYPES[s.goatQueue[s.goatQueueIdx+gi]||0].emoji;
-    ctx.fillText(goatIcons, W-76, 22);
-
-    animRef.current = requestAnimationFrame(loop);
-  };
-
-  /* ── Touch/Mouse ── */
-  var getPos = function(e){
-    var canvas=canvasRef.current; var rect=canvas.getBoundingClientRect();
-    var sx=W/rect.width, sy=H/rect.height;
-    var cx=e.touches?e.touches[0].clientX:e.clientX;
-    var cy=e.touches?e.touches[0].clientY:e.clientY;
-    return {x:(cx-rect.left)*sx, y:(cy-rect.top)*sy};
-  };
-  var onDown=function(e){
-    e.preventDefault(); var s=st.current; if(!s||s.launched||s.done||s.fail) return;
-    var p=getPos(e); var dx=p.x-s.goat.x,dy=p.y-s.goat.y;
-    if(Math.sqrt(dx*dx+dy*dy)<50){s.dragging=true;}
-  };
-  var onMove=function(e){
-    e.preventDefault(); var s=st.current; if(!s||!s.dragging) return;
-    var p=getPos(e); var MAX=72;
-    var dx=p.x-SLING_X,dy=p.y-SLING_Y,dist=Math.sqrt(dx*dx+dy*dy);
-    if(dist>MAX){dx=dx/dist*MAX;dy=dy/dist*MAX;}
-    s.goat.x=SLING_X+dx; s.goat.y=SLING_Y+dy;
-  };
-  var onUp=function(e){
-    e.preventDefault(); var s=st.current; if(!s||!s.dragging) return;
-    s.dragging=false;
-    var dx=SLING_X-s.goat.x,dy=SLING_Y-s.goat.y;
-    var spd=0.3*s.gt.speed;
-    s.goat.vx=dx*spd; s.goat.vy=dy*spd;
-    s.launched=true;
-  };
-
-  /* ── Ekran Geçişleri ── */
-  var startLevel = function(idx){
-    setCurLevel(idx); initLevel(idx); setScreen("game");
-    cancelAnimationFrame(animRef.current);
-    animRef.current = requestAnimationFrame(loop);
-  };
-  var onLevelDone = function(){
-    var next = curLevel+1;
-    if(next > savedLevel) saveProgress(next);
-    if(next >= LEVELS.length){ setScreen("gameover"); return; }
-    startLevel(next);
-  };
-  var onRetry = function(){ startLevel(curLevel); };
-
-  React.useEffect(function(){
-    return function(){cancelAnimationFrame(animRef.current);};
-  },[]);
-
-  /* ── Bölüm Seçimi Ekranı ── */
-  if(screen==="levelsel") return (
-    <div className="anim-fade">
-      <h2 style={{margin:"0 0 4px",fontSize:17,fontWeight:800,color:"#111827"}}>🐐 Koyun Fırlatma</h2>
-      <div style={{fontSize:11,color:"#9CA3AF",marginBottom:14}}>Bölüm seç · {savedLevel+1}/{LEVELS.length} açık</div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:8,marginBottom:16}}>
-        {LEVELS.map(function(lv,i){
-          var unlocked = i<=savedLevel;
-          return (
-            <button key={i} onClick={function(){if(unlocked) startLevel(i);}}
-              style={{aspectRatio:"1",borderRadius:12,border:"none",
-                background:i<savedLevel?"#D1FAE5":i===savedLevel?"linear-gradient(135deg,#8B5CF6,#7C3AED)":"#F3F4F6",
-                color:i<=savedLevel?"#111":"#D1D5DB",fontWeight:800,fontSize:15,cursor:unlocked?"pointer":"not-allowed",
-                boxShadow:i===savedLevel?"0 2px 8px rgba(139,92,246,.4)":"none",WebkitAppearance:"none"}}>
-              {unlocked ? (i+1) : "🔒"}
-            </button>
-          );
-        })}
-      </div>
-      <div style={{background:"#F5F3FF",borderRadius:14,padding:"12px 14px",marginBottom:12}}>
-        <div style={{fontWeight:700,fontSize:13,color:"#5B21B6",marginBottom:8}}>🐐 Keçi Türleri</div>
-        {GOAT_TYPES.map(function(gt,i){return (
-          <div key={gt.id} style={{display:"flex",alignItems:"center",gap:10,marginBottom:6,background:"#fff",borderRadius:10,padding:"8px 10px"}}>
-            <span style={{fontSize:24}}>{gt.emoji}</span>
-            <div>
-              <div style={{fontWeight:700,fontSize:13,color:"#111"}}>{gt.name} Keçi</div>
-              <div style={{fontSize:10,color:"#9CA3AF"}}>Güç:{Math.round(gt.mass*10)} · Hız:{Math.round(gt.speed*10)} · R:{gt.radius}</div>
-            </div>
-          </div>
-        );})}
-      </div>
-    </div>
-  );
-
-  /* ── Oyun Bitti Ekranı ── */
-  if(screen==="gameover") return (
-    <div className="anim-fade" style={{textAlign:"center",paddingTop:40}}>
-      <div style={{fontSize:60,marginBottom:12}}>🏆</div>
-      <div style={{fontWeight:800,fontSize:22,color:"#111827",marginBottom:8}}>Tebrikler!</div>
-      <div style={{fontSize:14,color:"#6B7280",marginBottom:20}}>Tüm bölümleri tamamladın!</div>
-      <button onClick={function(){saveProgress(0);setSavedLevel(0);setScreen("levelsel");}}
-        style={{background:"linear-gradient(135deg,#8B5CF6,#7C3AED)",color:"#fff",border:"none",borderRadius:14,padding:"12px 28px",fontWeight:700,fontSize:15,cursor:"pointer"}}>
-        🔄 Baştan Başla
-      </button>
-    </div>
-  );
-
-  /* ── Oyun Ekranı ── */
-  return (
-    <div className="anim-fade">
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-        <div style={{display:"flex",gap:8,alignItems:"center"}}>
-          <button onClick={function(){cancelAnimationFrame(animRef.current);setScreen("levelsel");}}
-            style={{background:"rgba(var(--primary-rgb),.1)",color:"var(--primary,#8B5CF6)",border:"none",borderRadius:8,padding:"5px 10px",fontWeight:600,fontSize:11,cursor:"pointer"}}>← Geri</button>
-          <span style={{fontWeight:700,fontSize:14,color:"#111"}}>Bölüm {curLevel+1}</span>
-        </div>
-        <button onClick={onRetry}
-          style={{background:"rgba(239,68,68,.1)",color:"#EF4444",border:"none",borderRadius:8,padding:"5px 10px",fontWeight:600,fontSize:11,cursor:"pointer"}}>🔄 Tekrar</button>
-      </div>
-      <div style={{fontSize:10,color:"#9CA3AF",marginBottom:6,textAlign:"center"}}>
-        🐐 Keçiye bas, geri çek, bırak! Tüm 👮 figürlerini yık
-      </div>
-      <div style={{position:"relative",borderRadius:16,overflow:"hidden",boxShadow:"0 4px 20px rgba(0,0,0,.15)"}}>
-        <canvas ref={canvasRef} width={W} height={H}
-          style={{width:"100%",display:"block",touchAction:"none"}}
-          onMouseDown={onDown} onMouseMove={onMove} onMouseUp={onUp}
-          onTouchStart={onDown} onTouchMove={onMove} onTouchEnd={onUp}/>
-        {ui.levelDone && (
-          <div style={{position:"absolute",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,.65)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
-            <div style={{fontSize:50,marginBottom:8}}>🎉</div>
-            <div style={{color:"#fff",fontWeight:800,fontSize:20,marginBottom:4}}>Bölüm Tamamlandı!</div>
-            <div style={{color:"#FFD700",fontWeight:700,fontSize:16,marginBottom:18}}>🏆 {ui.score} puan</div>
-            <button onClick={onLevelDone}
-              style={{background:"linear-gradient(135deg,#10B981,#059669)",color:"#fff",border:"none",borderRadius:14,padding:"12px 28px",fontWeight:700,fontSize:15,cursor:"pointer",marginBottom:8}}>
-              ➡️ Sonraki Bölüm
-            </button>
-            <button onClick={onRetry}
-              style={{background:"#F0F0F5",color:"#fff",border:"none",borderRadius:12,padding:"8px 20px",fontWeight:600,fontSize:13,cursor:"pointer"}}>
-              🔄 Tekrar Oyna
-            </button>
-          </div>
-        )}
-        {ui.levelFail && !ui.levelDone && (
-          <div style={{position:"absolute",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,.65)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
-            <div style={{fontSize:50,marginBottom:8}}>😅</div>
-            <div style={{color:"#fff",fontWeight:800,fontSize:20,marginBottom:4}}>Keçiler Bitti!</div>
-            <div style={{color:"#FCA5A5",fontSize:13,marginBottom:18}}>Hedeflerin bir kısmı kaldı</div>
-            <button onClick={onRetry}
-              style={{background:"linear-gradient(135deg,#EF4444,#DC2626)",color:"#fff",border:"none",borderRadius:14,padding:"12px 28px",fontWeight:700,fontSize:15,cursor:"pointer"}}>
-              🔄 Tekrar Dene
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );
@@ -706,7 +319,7 @@ function AcilModal(props) {
 
   var mesajOlustur = function(){
     var tarih = new Date().toLocaleString("tr-TR");
-    var satirlar = ["🚨 ACİL - Üç Kule Tarım ve Hayvancılık", "", durum.trim()];
+    var satirlar = ["🚨 ACİL - ÜÇ KULE TARIM VE HAYVANCILIK", "", durum.trim()];
     if(konum.trim()) satirlar.push("Konum: "+konum.trim());
     satirlar.push("", "Tarih: "+tarih);
     return encodeURIComponent(satirlar.join("\n"));
@@ -930,9 +543,9 @@ tabBtn:{
 };
 
 const BREEDS = [
-  { id:"anac",  name:"Anaç",  emoji:"🐑", color:"#059669", bg:"#D1FAE5", bgCard:"#F0FDF4", desc:"Anaç koyun" },
-  { id:"kuzu",  name:"Kuzu",  emoji:"🐏", color:"#D97706", bg:"#FEF3C7", bgCard:"#FFFBEB", desc:"Kuzu" },
-  { id:"koc",   name:"Koç",   emoji:"🐑", color:"#7C3AED", bg:"#EDE9FE", bgCard:"#F5F3FF", desc:"Koç" },
+  { id:"anac", name:"Anaç", emoji:"🐑", color:"#059669", bg:"#D1FAE5", bgCard:"#F0FDF4", desc:"Anaç koyun" },
+  { id:"kuzu", name:"Kuzu", emoji:"🐏", color:"#D97706", bg:"#FEF3C7", bgCard:"#FFFBEB", desc:"Kuzu" },
+  { id:"koc",  name:"Koç",  emoji:"🐑", color:"#7C3AED", bg:"#EDE9FE", bgCard:"#F5F3FF", desc:"Koç" },
 ];
 
 const VACCINE_DEFS = [
@@ -949,13 +562,13 @@ const CONDITION_OPTIONS = ["Mastitis","Topallık","İshal","Parazit","Abort","Pn
 const CLOSE_REASONS = ["İyileşti","Tedavi Tamamlandı","Kronik Hastalık","Hayvan Öldü","Başka Tesise Nakil","Diğer"];
 
 const DEMO_USERS = [
-  { id:"u1", name:"Danışman",        emoji:"👨‍💼", role:"yonetici", members:["İsmail AKAR"],    pin:null },
-  { id:"u2", name:"İşletme Sahibi",  emoji:"🏠",  role:"yonetici", members:["Perçin İLDAY"],   pin:null },
-  { id:"u3", name:"Çoban 1",         emoji:"🐐",  role:"coban",    members:[],                  pin:null },
-  { id:"u4", name:"Çoban 2",         emoji:"🐐",  role:"coban",    members:[],                  pin:null },
-  { id:"u5", name:"Çoban 3",         emoji:"🐐",  role:"coban",    members:[],                  pin:null },
-  { id:"u6", name:"Çoban 4",         emoji:"🐐",  role:"coban",    members:[],                  pin:null },
-  { id:"u7", name:"Misafir",         emoji:"👁",  role:"misafir",  members:[],                  pin:null },
+  { id:"u1", name:"Danışman",       emoji:"👨‍💼", role:"yonetici", members:["İsmail AKAR"],  pin:null },
+  { id:"u2", name:"İşletme Sahibi", emoji:"🏠",  role:"yonetici", members:["Perçin İLDAY"], pin:null },
+  { id:"u3", name:"Çoban 1",        emoji:"🐐",  role:"coban",    members:[],               pin:null },
+  { id:"u4", name:"Çoban 2",        emoji:"🐐",  role:"coban",    members:[],               pin:null },
+  { id:"u5", name:"Çoban 3",        emoji:"🐐",  role:"coban",    members:[],               pin:null },
+  { id:"u6", name:"Çoban 4",        emoji:"🐐",  role:"coban",    members:[],               pin:null },
+  { id:"u7", name:"Misafir",        emoji:"👁",  role:"misafir",  members:[],               pin:null },
 ];
 
 // Supabase dönüşümleri
@@ -1106,9 +719,9 @@ function HealthDetailModal({ record, goat, logs, treatmentDays, onUpdate, onClos
           Aynı tedavi devam ediyor (değişiklik yok)
         </label>
       </div>
-      <VoiceInput value={treatment} onChange={v=>{setTreatment(v);setTreatmentChanged(true);}} placeholder="İlaç, doz, işlem..." multiline rows={3}/>
+      <textarea value={treatment} onChange={e=>{setTreatment(e.target.value);setTreatmentChanged(true);} placeholder="İlaç, doz, işlem..." rows={3} style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit",resize:"none"}}/>
       <FL>Notlar</FL>
-      <VoiceInput value={notes} onChange={setNotes} placeholder="Not ekle..." multiline rows={2}/>
+      <textarea value={notes} onChange={e=>setNotes(e.target.value)} placeholder="Not ekle..." rows={2} style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit",resize:"none"}}/>
       <div style={{display:"flex",gap:8,marginTop:4}}>
         <button onClick={()=>setShowClose(true)} style={{...S.btnSm,background:"rgba(239,68,68,.1)",color:"#EF4444",padding:"10px 14px",fontSize:12}}>📋 Sonlandır</button>
         <button onClick={save} disabled={saving} style={{...S.btnPrimary,flex:1,padding:12,opacity:saving?.6:1}}>{saving?"Kaydediliyor...":"💾 Güncelle"}</button>
@@ -1211,19 +824,9 @@ function EarTagInput({ devletNo, setDevletNo, isletmeNo, setIsletmeNo }) {
   return (
     <div style={{marginBottom:4}}>
       <div style={{fontSize:11,fontWeight:700,color:"#374151",marginBottom:4,textTransform:"uppercase",letterSpacing:".3px"}}>Devlet Küpe No</div>
-      <input
-        value={devletNo||""}
-        onChange={e=>setDevletNo(e.target.value)}
-        placeholder="Devlet küpe no (opsiyonel)"
-        style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",marginBottom:8,fontFamily:"inherit"}}
-      />
+      <input value={devletNo||""} onChange={e=>setDevletNo(e.target.value)} placeholder="Devlet küpe no (opsiyonel)" style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",marginBottom:8,fontFamily:"inherit"}}/>
       <div style={{fontSize:11,fontWeight:700,color:"#374151",marginBottom:4,textTransform:"uppercase",letterSpacing:".3px"}}>İşletme Küpe No</div>
-      <input
-        value={isletmeNo||""}
-        onChange={e=>setIsletmeNo(e.target.value)}
-        placeholder="İşletme küpe no (opsiyonel)"
-        style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit"}}
-      />
+      <input value={isletmeNo||""} onChange={e=>setIsletmeNo(e.target.value)} placeholder="İşletme küpe no (opsiyonel)" style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit"}}/>
     </div>
   );
 }
@@ -1264,10 +867,10 @@ function HealthModal({ goats, breedFilter, onSave, onClose, preGoatId, currentUs
     const cond = condition==="Diğer"?condCustom.trim():condition;
     if(!cond){setErr("Hastalık/durum giriniz");return;}
     setSaving(true);
-    const existingGoat = goats.find(g=>g.earTag===(devletNo||isletmeNo||"").trim()&&!g.archived);
-    const goatId = existingGoat ? existingGoat.id : "ext_"+(devletNo||isletmeNo||"").trim().replace(/\s/g,"_");
-    const rec = { id:"h"+Date.now(), goatId, goatEarTag:(devletNo||isletmeNo||"").trim(), breed, date, condition:cond, treatment, status, veterinarian:currentUser, cost:"", createdByName:currentUser, notes, category };
-    const { error } = await sb.from("health_records").insert({...fromHealth(rec), goat_ear_tag:(devletNo||isletmeNo||"").trim()});
+    const existingGoat = goats.find(g=>g.earTag===earTag.trim()&&!g.archived);
+    const goatId = existingGoat ? existingGoat.id : "ext_"+earTag.trim().replace(/\s/g,"_");
+    const rec = { id:"h"+Date.now(), goatId, goatEarTag:earTag.trim(), breed, date, condition:cond, treatment, status, veterinarian:currentUser, cost:"", createdByName:currentUser, notes, category };
+    const { error } = await sb.from("health_records").insert({...fromHealth(rec), goat_ear_tag:earTag.trim()});
     if(error){setErr("Kayıt hatası: "+error.message);setSaving(false);return;}
     await addLog(rec.id, goatId, breed, "açılış", `${cond} — ${currentUser} tarafından açıldı`, currentUser);
     if(photos.length>0) await uploadHealthPhotos(rec.id, photos);
@@ -1293,7 +896,7 @@ function HealthModal({ goats, breedFilter, onSave, onClose, preGoatId, currentUs
 
   return <ModalWrap title="🩺 Sağlık Kaydı Ekle" onClose={onClose}>
     {err&&<ErrBox msg={err}/>}
-    
+    <FL>Irk *</FL>
     <div style={{display:"flex",gap:6}}>
       {BREEDS.map(b=>(
         <button key={b.id} onClick={()=>setBreed(b.id)}
@@ -1306,7 +909,6 @@ function HealthModal({ goats, breedFilter, onSave, onClose, preGoatId, currentUs
     <div style={{display:"flex",gap:6}}>
       <button onClick={()=>setCategory("anac")} style={{flex:1,padding:"9px 0",borderRadius:8,border:`1.5px solid ${category==="anac"?"#059669":"#E5E7EB"}`,background:category==="anac"?"#D1FAE5":"#fff",color:category==="anac"?"#065F46":"#8c8c7e",fontWeight:category==="anac"?700:400,fontSize:13,cursor:"pointer"}}>🐑 Anaç</button>
       <button onClick={()=>setCategory("kuzu")} style={{flex:1,padding:"9px 0",borderRadius:8,border:`1.5px solid ${category==="kuzu"?"#D97706":"#E5E7EB"}`,background:category==="kuzu"?"#FEF3C7":"#fff",color:category==="kuzu"?"#92400E":"#8c8c7e",fontWeight:category==="kuzu"?700:400,fontSize:13,cursor:"pointer"}}>🐏 Kuzu</button>
-      <button onClick={()=>setCategory("koc")} style={{flex:1,padding:"9px 0",borderRadius:8,border:`1.5px solid ${category==="koc"?"#7C3AED":"#E5E7EB"}`,background:category==="koc"?"#EDE9FE":"#fff",color:category==="koc"?"#5B21B6":"#8c8c7e",fontWeight:category==="koc"?700:400,fontSize:13,cursor:"pointer"}}>🐑 Koç</button>
     </div>
     <EarTagInput devletNo={devletNo} setDevletNo={setDevletNo} isletmeNo={isletmeNo} setIsletmeNo={setIsletmeNo}/>
     <FL>Tarih *</FL>
@@ -1316,9 +918,9 @@ function HealthModal({ goats, breedFilter, onSave, onClose, preGoatId, currentUs
       <option value="">— Seçin —</option>
       {CONDITION_OPTIONS.map(c=><option key={c} value={c}>{c}</option>)}
     </select>
-    {condition==="Diğer"&&<VoiceInput value={condCustom} onChange={setCondCustom} placeholder="Açıklayın..."/>}
+    {condition==="Diğer"&&<input value={condCustom} onChange={e=>setCondCustom(e.target.value)} placeholder="Açıklayın..." style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit"}}/>}
     <FL>Tedavi</FL>
-    <VoiceInput value={treatment} onChange={setTreatment} placeholder="İlaç, doz, işlem..." multiline rows={3}/>
+    <textarea value={treatment} onChange={e=>setTreatment(e.target.value)} placeholder="İlaç, doz, işlem..." rows={3} style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit",resize:"none"}}/>
     <FL>Tedavi Süresi (gün)</FL>
     <div style={{display:"flex",gap:6}}>
       {[0,1,2,3,4,5].map(d=>(
@@ -1334,7 +936,7 @@ function HealthModal({ goats, breedFilter, onSave, onClose, preGoatId, currentUs
     <FL>Durum *</FL>
     <StatusPicker value={status} onChange={setStatus}/>
     <FL>Notlar</FL>
-    <VoiceInput value={notes} onChange={setNotes} placeholder="Notlar..." multiline rows={2}/>
+    <textarea value={notes} onChange={e=>setNotes(e.target.value)} placeholder="Notlar..." rows={2} style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit",resize:"none"}}/>
     <FL>Fotoğraf Ekle</FL>
     <div style={{display:"flex",gap:6,marginBottom:4}}>
       <button type="button" onClick={()=>cameraRef2.current?.click()}
@@ -1396,11 +998,11 @@ function VaccineModal({ breed, goats, onSave, onClose, currentUser }) {
     <FL>Aşı Türü *</FL>
     <select value={vaccineType} onChange={e=>setVaccineType(e.target.value)} style={S.select}><option value="">— Seçin —</option>{VACCINE_DEFS.map(v=><option key={v.id} value={v.id}>{v.name}</option>)}</select>
     <FL>Tarih *</FL><input type="date" value={date} onChange={e=>setDate(e.target.value)} style={S.input}/>
-    <FL>Parti / Seri No</FL><VoiceInput value={batchNo} onChange={setBatchNo} placeholder="örn. ENT-2026-A12"/>
+    <FL>Parti / Seri No</FL><input value={batchNo} onChange={e=>setBatchNo(e.target.value)} placeholder="örn. ENT-2026-A12" style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit"}}/>
     <FL>Hayvan Seçimi ({selected.size}/{breedGoats.length} seçili)</FL>
     {anacList.length>0&&<>
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}}>
-        <span style={{fontSize:11,fontWeight:700,color:"#10B981"}}>🐑 Anaçlar</span>
+        <span style={{fontSize:11,fontWeight:700,color:"#10B981"}}>🐐 Anaçlar</span>
         <button onClick={()=>toggleGroup(anacList)} style={{...S.btnSm,background:"rgba(74,124,63,.2)",color:"#10B981",fontSize:10}}>{anacList.every(g=>selected.has(g.id))?"Tümünü Kaldır":"Tümünü Seç"}</button>
       </div>
       {anacList.map(g=><GoatRow key={g.id} g={g}/>)}
@@ -1447,7 +1049,7 @@ function AddGoatModal({ breed, defaultCategory, onSave, onClose, currentUser }) 
   return <ModalWrap title={`${breed.emoji} ${breed.name} — Hayvan Ekle`} onClose={onClose}>
     {err&&<ErrBox msg={err}/>}
     <FL>İsim *</FL>
-    <VoiceInput value={name} onChange={setName} placeholder="Keçi adı"/>
+    <input value={name} onChange={e=>setName(e.target.value)} placeholder="Keçi adı" style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit"}}/>
     <EarTagInput devletNo={devletNo} setDevletNo={setDevletNo} isletmeNo={isletmeNo} setIsletmeNo={setIsletmeNo}/>
     <FL>Cinsiyet</FL>
     <select value={gender} onChange={e=>setGender(e.target.value)} style={S.select}><option value="dişi">Dişi</option><option value="erkek">Erkek</option></select>
@@ -1458,9 +1060,9 @@ function AddGoatModal({ breed, defaultCategory, onSave, onClose, currentUser }) 
     <FL>Ağırlık (kg)</FL>
     <input type="number" value={weight} onChange={e=>setWeight(e.target.value)} style={S.input} placeholder="0"/>
     <FL>Renk</FL>
-    <VoiceInput value={color} onChange={setColor} placeholder="Beyaz, Siyah..."/>
+    <input value={color} onChange={e=>setColor(e.target.value)} placeholder="Beyaz, Siyah..." style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit"}}/>
     <FL>Notlar</FL>
-    <VoiceInput value={notes} onChange={setNotes} placeholder="Notlar..." multiline rows={2}/>
+    <textarea value={notes} onChange={e=>setNotes(e.target.value)} placeholder="Notlar..." rows={2} style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit",resize:"none"}}/>
     <div style={{display:"flex",gap:8,marginTop:4}}>
       <button onClick={onClose} style={{...S.btnOutline,flex:1,padding:12}}>İptal</button>
       <button onClick={save} disabled={saving} style={{...S.btnPrimary,flex:2,padding:12,opacity:saving?.6:1}}>{saving?"Kaydediliyor...":"💾 Kaydet"}</button>
@@ -1714,22 +1316,22 @@ function DeathsPage({ deaths, currentUser, onDelete }) {
 
   const save = async () => {
     if(!breed){setErr("Irk seçiniz");return;}
-    if(!(devletNo||isletmeNo||"").trim()){setErr("Küpe no giriniz");return;}
+    if(false){setErr("Küpe no giriniz");return;}
     if(!cause){setErr("Ölüm sebebi seçiniz");return;}
     setSaving(true);
     const finalCause = cause==="Diğer" ? causeCustom.trim() : cause;
     if(editDeath){
-      await sb.from("deaths").update({breed,category,ear_tag:(devletNo||isletmeNo||"").trim(),death_date:deathDate,death_time:deathTime||null,cause:finalCause,notes:notes||null}).eq("id",editDeath.id);
-      const updated = {...editDeath,breed,category,earTag:(devletNo||isletmeNo||"").trim(),deathDate,deathTime,cause:finalCause,notes};
+      await sb.from("deaths").update({breed,category,ear_tag:earTag.trim(),death_date:deathDate,death_time:deathTime||null,cause:finalCause,notes:notes||null}).eq("id",editDeath.id);
+      const updated = {...editDeath,breed,category,earTag:(devletNo||"")+(isletmeNo?"|||"+isletmeNo:""),deathDate,deathTime,cause:finalCause,notes};
       if(photos.length>0) await uploadPhotos(editDeath.id, photos);
       setLocal(p=>p.map(x=>x.id===editDeath.id?updated:x));
       setShowForm(false);reset();setSaving(false);return;
     }
-    const rec = {id:"d"+Date.now(), breed, category, ear_tag:(devletNo||isletmeNo||"").trim(), death_date:deathDate, death_time:deathTime||null, cause:finalCause, notes:notes||null, created_by:currentUser};
+    const rec = {id:"d"+Date.now(), breed, category, ear_tag:earTag.trim(), death_date:deathDate, death_time:deathTime||null, cause:finalCause, notes:notes||null, created_by:currentUser};
     const {error} = await sb.from("deaths").insert(rec);
     if(error){setErr("Hata: "+error.message);setSaving(false);return;}
     if(photos.length>0) await uploadPhotos(rec.id, photos);
-    const obj = {id:rec.id, breed, category, earTag:(devletNo||isletmeNo||"").trim(), deathDate, deathTime, cause:finalCause, notes, createdBy:currentUser};
+    const obj = {id:rec.id, breed, category, earTag:(devletNo||"")+(isletmeNo?"|||"+isletmeNo:""), deathDate, deathTime, cause:finalCause, notes, createdBy:currentUser};
     setLocal(p=>[obj,...p]);
     onDelete && onDelete(null, obj);
     setShowForm(false);
@@ -1771,7 +1373,7 @@ function DeathsPage({ deaths, currentUser, onDelete }) {
         <div style={{...S.card,marginBottom:12,background:"#FFF8F8",border:"1.5px solid #F5C0BA"}}>
           <div style={{fontWeight:700,fontSize:14,color:"#EF4444",marginBottom:10}}>{editDeath?"✏️ Kaydı Düzenle":"➕ Ölüm Kaydı"}</div>
           {err&&<ErrBox msg={err}/>}
-          
+          <FL>Irk *</FL>
           <div style={{display:"flex",gap:6,marginBottom:4}}>
             {BREEDS.map(b=><button key={b.id} onClick={()=>setBreed(b.id)} style={{flex:1,padding:"7px 0",borderRadius:8,border:`1.5px solid ${breed===b.id?b.color:"#6B7280"}`,background:breed===b.id?b.bg:"#fff",color:breed===b.id?b.color:"#9CA3AF",fontWeight:breed===b.id?700:400,fontSize:11,cursor:"pointer"}}>{b.emoji} {b.name}</button>)}
           </div>
@@ -1796,7 +1398,7 @@ function DeathsPage({ deaths, currentUser, onDelete }) {
           <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
             {DEATH_CAUSES.map(c=><button key={c} onClick={()=>setCause(c)} style={{padding:"6px 10px",borderRadius:8,border:`1.5px solid ${cause===c?"#BE3B31":"#E5E7EB"}`,background:cause===c?"#FFF0EE":"#fff",color:cause===c?"#BE3B31":"#8c8c7e",fontWeight:cause===c?700:400,fontSize:11,cursor:"pointer"}}>{c}</button>)}
           </div>
-          {cause==="Diğer"&&<VoiceInput value={causeCustom} onChange={setCauseCustom} placeholder="Sebebi yazın..."/>}
+          {cause==="Diğer"&&<input value={causeCustom} onChange={e=>setCauseCustom(e.target.value)} placeholder="Sebebi yazın..." style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit"}}/>}
           <FL>Notlar</FL>
           <textarea value={notes} onChange={e=>setNotes(e.target.value)} rows={2} style={{...S.input,resize:"vertical"}}/>
           <FL>Fotoğraf Ekle</FL>
@@ -1834,8 +1436,8 @@ function DeathsPage({ deaths, currentUser, onDelete }) {
           <div key={d.id} style={{...S.card,padding:12,marginBottom:8,border:"1.5px solid #F5C0BA"}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"start"}}>
               <div style={{flex:1}}>
-                <div style={{fontSize:11,fontWeight:700,color:b?.color,marginBottom:2}}>{b?.emoji} {b?.name} · {d.category==="kuzu"?"🐏 Kuzu":"🐑 Anaç"} · 📅 {fmt(d.deathDate)}{d.deathTime?` · ⏰ ${d.deathTime}`:""}</div>
-                <div style={{fontWeight:700,fontSize:14,color:"#1A1A2E"}}>{(()=>{const [dev,isl]=(d.earTag||"").split("|||");return(<span>{dev?`Devlet: ${dev}`:""}{dev&&isl?" · ":""}{isl?`İşletme: ${isl}`:""}{!dev&&!isl?"Küpe girilmedi":""}</span>)})()}</div>
+                <div style={{fontSize:11,fontWeight:700,color:b?.color,marginBottom:2}}>{b?.emoji} {b?.name} · {d.category==="kuzu"?"🐏 Kuzu":"🐐 Anaç"} · 📅 {fmt(d.deathDate)}{d.deathTime?` · ⏰ ${d.deathTime}`:""}</div>
+                <div style={{fontWeight:700,fontSize:14,color:"#1A1A2E"}}>Küpe: {d.earTag}</div>
                 <div style={{fontSize:12,color:"#EF4444",marginTop:2,fontWeight:600}}>☠️ {d.cause}</div>
                 {d.notes&&<div style={{fontSize:11,color:"#6B7280",fontStyle:"italic",marginTop:2}}>📝 {d.notes}</div>}
                 <div style={{fontSize:10,color:"#6B7280",marginTop:4}}>Ekleyen: {d.createdBy}</div>
@@ -1951,7 +1553,7 @@ function GroupTreatmentsPage({ groupTreatments, treatmentDaysData, currentUser, 
         <div style={{...S.card,marginBottom:12,background:"#E8F5E9",border:"1.5px solid #D4E8C2"}}>
           <div style={{fontWeight:700,fontSize:14,color:"#10B981",marginBottom:10}}>➕ Toplu Tedavi Kaydı</div>
           {err&&<ErrBox msg={err}/>}
-          
+          <FL>Irk *</FL>
           <div style={{display:"flex",gap:6}}>
             {BREEDS.map(b=><button key={b.id} onClick={()=>setBreed(b.id)} style={{flex:1,padding:"7px 0",borderRadius:8,border:`1.5px solid ${breed===b.id?b.color:"#6B7280"}`,background:breed===b.id?b.bg:"#fff",color:breed===b.id?b.color:"#9CA3AF",fontWeight:breed===b.id?700:400,fontSize:11,cursor:"pointer"}}>{b.emoji} {b.name}</button>)}
           </div>
@@ -1962,15 +1564,15 @@ function GroupTreatmentsPage({ groupTreatments, treatmentDaysData, currentUser, 
             <button onClick={()=>setCategory("koc")} style={{flex:1,padding:"8px 0",borderRadius:8,border:`1.5px solid ${category==="koc"?"#7C3AED":"#E5E7EB"}`,background:category==="koc"?"#EDE9FE":"#fff",color:category==="koc"?"#5B21B6":"#8c8c7e",fontWeight:category==="koc"?700:400,fontSize:13,cursor:"pointer"}}>🐑 Koç</button>
           </div>
           <FL>Grup Adı *</FL>
-          <VoiceInput value={groupName} onChange={setGroupName} placeholder="örn: Grup A, Doğu Ağıl"/>
+          <input value={groupName} onChange={e=>setGroupName(e.target.value)} placeholder="örn: Grup A, Doğu Ağıl" style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit"}}/>
           <FL>Hastalık / Durum *</FL>
           <select value={condition} onChange={e=>setCondition(e.target.value)} style={S.select}>
             <option value="">— Seçin —</option>
             {CONDITION_OPTIONS.map(c=><option key={c} value={c}>{c}</option>)}
           </select>
-          {condition==="Diğer"&&<VoiceInput value={condCustom} onChange={setCondCustom} placeholder="Açıklayın..."/>}
+          {condition==="Diğer"&&<input value={condCustom} onChange={e=>setCondCustom(e.target.value)} placeholder="Açıklayın..." style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit"}}/>}
           <FL>Tedavi</FL>
-          <VoiceInput value={treatment} onChange={setTreatment} placeholder="İlaç, doz, işlem..." multiline rows={2}/>
+          <textarea value={treatment} onChange={e=>setTreatment(e.target.value)} placeholder="İlaç, doz, işlem..." rows={2} style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit",resize:"none"}}/>
           <FL>Tedavi Süresi (gün)</FL>
           <div style={{display:"flex",gap:6}}>
             {[0,1,2,3,4,5].map(d=><button key={d} onClick={()=>setTxDays(d)} style={{flex:1,padding:"8px 0",borderRadius:8,border:`2px solid ${txDays===d?"#4A7C3F":"#E5E7EB"}`,background:txDays===d?"#E3F0DC":"#fff",color:txDays===d?"#3D5A25":"#555",fontWeight:700,fontSize:13,cursor:"pointer"}}>{d===0?"—":d}</button>)}
@@ -2000,12 +1602,12 @@ function GroupTreatmentsPage({ groupTreatments, treatmentDaysData, currentUser, 
           <div key={gt.id} style={{...S.card,padding:12,marginBottom:8,border:`1.5px solid ${b?.color}22`}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"start",marginBottom:6}}>
               <div style={{flex:1}}>
-                <div style={{fontSize:11,fontWeight:700,color:b?.color,marginBottom:2}}>{b?.emoji} {b?.name} · {gt.category==="kuzu"?"🐏 Kuzu":"🐑 Anaç"} · {gt.groupName}{gt.startDate?` · 📅 ${fmt(gt.startDate)}`:""}</div>
+                <div style={{fontSize:11,fontWeight:700,color:b?.color,marginBottom:2}}>{b?.emoji} {b?.name} · {gt.category==="kuzu"?"🐏 Kuzu":"🐐 Anaç"} · {gt.groupName}{gt.startDate?` · 📅 ${fmt(gt.startDate)}`:""}</div>
                 <div style={{fontWeight:700,fontSize:14,color:"#1A1A2E"}}>{gt.condition}</div>
                 {gt.treatment&&<div style={{fontSize:12,color:"#1F2937",marginTop:2}}>💊 {gt.treatment}</div>}
                 {days.length>0&&<div style={{fontSize:10,background:"rgba(74,124,63,.2)",color:"#10B981",display:"inline-block",padding:"2px 8px",borderRadius:6,marginTop:4,fontWeight:600}}>
                   📅 {doneDays}/{days.length} gün · {doneDays<days.length?`${doneDays+1}. günde`:"Tamamlandı"}
-                </div>
+                </div>}
                 {gt.notes&&<div style={{fontSize:11,color:"#6B7280",fontStyle:"italic",marginTop:2}}>📝 {gt.notes}</div>}
                 <div style={{fontSize:10,color:"#6B7280",marginTop:4}}>Ekleyen: {gt.createdBy}</div>
               </div>
@@ -2115,7 +1717,7 @@ function BirthModal({ onSave, onClose, currentUser, editData }) {
     <BtnGroup label="Irk *" options={BREEDS.map(b=>[b.id,b.emoji+" "+b.name])} value={breed} onChange={setBreed}
       colorMap={{saanen:{bg:"#E3F0DC",color:"#10B981",border:"#4A7C3F"},honamli:{bg:"#F0E6F6",color:"#BA68C8",border:"#7B4B94"},halep:{bg:"#FFF0E6",color:"#E8975A",border:"#B8602A"}}}/>
     <FL>Ana Hayvan Küpe No *</FL>
-    <VoiceInput value={motherEarTag} onChange={setMotherEarTag} placeholder="TR-15-0042"/>
+    <input value={motherEarTag} onChange={e=>setMotherEarTag(e.target.value)} placeholder="TR-15-0042" style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit"}}/>
     <BtnGroup label="Doğum Türü *" options={[["normal","✅ Normal"],["gunsuz","⚠️ Günsüz"],["atik","❌ Atık"]]} value={birthType} onChange={v=>{setBirthType(v);if(v==="atik"){setKidCount(0);setKids([]);}}}
       colorMap={{normal:{bg:"#E3F0DC",color:"#10B981",border:"#4A7C3F"},gunsuz:{bg:"#FFF8EC",color:"var(--primary,#8B5CF6)",border:"#D4850A"},atik:{bg:"#FFF0EE",color:"#EF4444",border:"#BE3B31"}}}/>
     {birthType!=="atik" && <>
@@ -2449,7 +2051,7 @@ function ReportsPage({reports, goats, logs, vaccineReports, births, deaths, grou
             {/* Kategori */}
             <select value={suruCat} onChange={e=>setSuruCat(e.target.value)} style={{...S.select,flex:1,minWidth:90,fontSize:12}}>
               <option value="all">Anaç + Oğlak</option>
-              <option value="anac">🐑 Anaç</option>
+              <option value="anac">🐐 Anaç</option>
               <option value="kuzu">🐏 Kuzu</option>
             </select>
             {/* Cinsiyet */}
@@ -2475,7 +2077,7 @@ function ReportsPage({reports, goats, logs, vaccineReports, births, deaths, grou
                 <div style={{flex:1}}>
                   <div style={{fontWeight:700,fontSize:13,color:"#1A1A2E"}}>{g.name}</div>
                   <div style={{fontSize:11,color:"#9CA3AF"}}>
-                    🏷 {g.earTag} · {g.gender==="erkek"?"♂ Erkek":"♀ Dişi"} · {g.category==="anac"?"🐑 Anaç":"🐏 Kuzu"}
+                    🏷 {g.earTag} · {g.gender==="erkek"?"♂ Erkek":"♀ Dişi"} · {g.category==="anac"?"🐐 Anaç":"🐏 Kuzu"}
                   </div>
                 </div>
                 <span style={{fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:8,background:b?.bg,color:b?.color}}>{b?.name}</span>
@@ -2627,8 +2229,8 @@ function ReportsPage({reports, goats, logs, vaccineReports, births, deaths, grou
               <div key={d.id} style={{...S.card,padding:12,marginBottom:8,border:"1.5px solid #F5C0BA"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"start"}}>
                   <div>
-                    <div style={{fontSize:11,fontWeight:700,color:br?.color}}>{br?.emoji} {br?.name} · {d.category==="kuzu"?"🐏 Kuzu":"🐑 Anaç"} · 📅 {fmt(d.deathDate)}{d.deathTime?` · ⏰ ${d.deathTime}`:""}</div>
-                    <div style={{fontWeight:700,fontSize:14,color:"#1A1A2E"}}>{(()=>{const [dev,isl]=(d.earTag||"").split("|||");return(<span>{dev?`Devlet: ${dev}`:""}{dev&&isl?" · ":""}{isl?`İşletme: ${isl}`:""}{!dev&&!isl?"Küpe girilmedi":""}</span>)})()}</div>
+                    <div style={{fontSize:11,fontWeight:700,color:br?.color}}>{br?.emoji} {br?.name} · {d.category==="kuzu"?"🐏 Kuzu":"🐐 Anaç"} · 📅 {fmt(d.deathDate)}{d.deathTime?` · ⏰ ${d.deathTime}`:""}</div>
+                    <div style={{fontWeight:700,fontSize:14,color:"#1A1A2E"}}>Küpe: {d.earTag}</div>
                     <div style={{fontSize:12,color:"#EF4444",fontWeight:600}}>☠️ {d.cause}</div>
                     {d.notes&&<div style={{fontSize:11,color:"#6B7280",fontStyle:"italic"}}>📝 {d.notes}</div>}
                     <div style={{fontSize:10,color:"#6B7280",marginTop:4}}>Ekleyen: {d.createdBy}</div>
@@ -2654,7 +2256,7 @@ function ReportsPage({reports, goats, logs, vaccineReports, births, deaths, grou
               <div key={gt.id} style={{...S.card,padding:12,marginBottom:8,border:`1.5px solid ${br?.color}22`}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"start"}}>
                   <div style={{flex:1}}>
-                    <div style={{fontSize:11,fontWeight:700,color:br?.color}}>{br?.emoji} {br?.name} · {gt.category==="kuzu"?"🐏 Kuzu":"🐑 Anaç"} · {gt.groupName}</div>
+                    <div style={{fontSize:11,fontWeight:700,color:br?.color}}>{br?.emoji} {br?.name} · {gt.category==="kuzu"?"🐏 Kuzu":"🐐 Anaç"} · {gt.groupName}</div>
                     <div style={{fontWeight:700,fontSize:14,color:"#1A1A2E"}}>{gt.condition}</div>
                     {gt.treatment&&<div style={{fontSize:12,color:"#1F2937"}}>💊 {gt.treatment}</div>}
                     {gt.startDate&&<div style={{fontSize:11,color:"#9CA3AF"}}>📅 {fmt(gt.startDate)}</div>}
@@ -2739,7 +2341,7 @@ function GroupVaccineModal({ group, goats, onSave, onClose, currentUser }) {
     <FL>Tarih *</FL>
     <input type="date" value={date} onChange={e=>setDate(e.target.value)} style={S.input}/>
     <FL>Parti / Seri No</FL>
-    <VoiceInput value={batchNo} onChange={setBatchNo} placeholder="örn. VAK-2026-A1"/>
+    <input value={batchNo} onChange={e=>setBatchNo(e.target.value)} placeholder="örn. VAK-2026-A1" style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit"}}/>
     <FL>Notlar</FL>
     <textarea value={notes} onChange={e=>setNotes(e.target.value)} rows={2} style={{...S.input,resize:"vertical",lineHeight:1.6}}/>
     <div style={{display:"flex",gap:8,marginTop:4}}>
@@ -2832,14 +2434,14 @@ function CreateGroupModal({ breed, goats, onSave, onClose, currentUser }) {
   return <ModalWrap title={`➕ ${breed.emoji} ${breed.name} — Yeni Grup`} onClose={onClose}>
     {err&&<ErrBox msg={err}/>}
     <FL>Grup Adı *</FL>
-    <VoiceInput value={name} onChange={setName} placeholder="örn. Saanen Oğlakları"/>
+    <input value={name} onChange={e=>setName(e.target.value)} placeholder="örn. Saanen Oğlakları" style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit"}}/>
     <FL>Açıklama</FL>
-    <VoiceInput value={desc} onChange={setDesc} placeholder="İsteğe bağlı..."/>
+    <input value={desc} onChange={e=>setDesc(e.target.value)} placeholder="İsteğe bağlı..." style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit"}}/>
     <FL>Hayvan Seç (opsiyonel — sonradan da eklenebilir)</FL>
     <div style={{fontSize:11,color:"#9CA3AF",marginBottom:8}}>{selected.size} hayvan seçildi</div>
     {breedGoats.length===0 && <div style={{fontSize:12,color:"#6B7280",textAlign:"center",padding:8,background:"#F5F5F5",borderRadius:8}}>Bu ırkta henüz hayvan yok</div>}
     {anacList.length>0&&<>
-      <div style={{fontSize:11,fontWeight:700,color:"#10B981",marginBottom:4,marginTop:4}}>🐑 Anaçlar</div>
+      <div style={{fontSize:11,fontWeight:700,color:"#10B981",marginBottom:4,marginTop:4}}>🐐 Anaçlar</div>
       {anacList.map(g=><GoatRow key={g.id} g={g}/>)}
     </>}
     {oglakList.length>0&&<>
@@ -3536,7 +3138,10 @@ function App(){
     setAddGoatModal(null);
     addActivity("hayvan_eklendi","Yeni hayvan eklendi",`${g.earTag} · ${g.category==="anac"?"Anaç":"Kuzu"}`,g.breed);
   };
-  const saveBulkGoats=gs=> hayvan · ${gs[0].category==="anac"?"Anaç":"Kuzu"}`,gs[0]?.breed);
+  const saveBulkGoats=gs=>{
+    setGoats(p=>[...p,...gs]);
+    setBulkAddModal(null);
+    if(gs.length>0) addActivity("toplu_hayvan","Toplu hayvan eklendi",`${gs.length} hayvan · ${gs[0].category==="anac"?"Anaç":"Kuzu"}`,gs[0]?.breed);
   };
   const updateHealth=updated=>{
     setHealthRecs(p=>p.map(h=>h.id===updated.id?updated:h));
@@ -3656,7 +3261,6 @@ function App(){
 
   const saveSoundPref = async (enabled) => {
     const userName = currentUser;
-    setSoundPref(enabled);
     setShowSoundPrompt(false);
     try {
       await sb.from("user_preferences").upsert({id:"sp_"+userName.replace(/\s/g,"_"), user_name:userName, sound_enabled:enabled, theme_id:theme.id});
@@ -3679,7 +3283,6 @@ function App(){
       try {
         const {data} = await sb.from("user_preferences").select("*").eq("user_name",currentUser).single();
         if(data) {
-          setSoundPref(data.sound_enabled);
           if(data.theme_id){ const t=COLOR_THEMES.find(x=>x.id===data.theme_id); setTheme(t||DEFAULT_THEME); }
         }
       } catch(e){}
@@ -3831,7 +3434,7 @@ function App(){
             
           </div>
           <h1 style={{color:"#1A1A2E",fontSize:17,fontWeight:800,margin:"12px 0 4px",lineHeight:1.4,letterSpacing:"-.3px",textAlign:"center"}}>
-            Üç Kule Tarım ve Hayvancılık<br/>
+            ÜÇ KULE TARIM VE HAYVANCILIK<br/>
             <span style={{color:theme.primary}}>ÜÇ KULE HAYVANCILIK</span>
           </h1>
           <div style={{display:"flex",gap:8,justifyContent:"center",marginTop:6}}>
@@ -3986,7 +3589,7 @@ function App(){
       {hModal&&!isGuest&&<HealthModal goats={goats} breedFilter={hModal.breedId||null} preGoatId={hModal.goatId||""} onSave={saveHealth} onClose={()=>setHModal(null)} currentUser={currentUser}/>}
       {vModal&&!isGuest&&<VaccineModal breed={BREEDS.find(b=>b.id===vModal)} goats={goats} onSave={saveVaccines} onClose={()=>setVModal(null)} currentUser={currentUser}/>}
       {addGoatModal&&!isGuest&&<AddGoatModal breed={BREEDS.find(b=>b.id===(addGoatModal.breedId||addGoatModal))} defaultCategory={addGoatModal.defaultCategory||"anac"} onSave={saveGoat} onClose={()=>setAddGoatModal(null)} currentUser={currentUser}/>}
-      {bulkAddModal&&!isGuest&&<BulkAddGoatModal breed={BREEDS.find(b=>b.id===bulkAddModal.breedId)} defaultCategory={bulkAddModal.defaultCategory||"anac"} onSave={saveBulkGoats} onClose= currentUser={currentUser}/>}
+      {bulkAddModal&&!isGuest&&<BulkAddGoatModal breed={BREEDS.find(b=>b.id===bulkAddModal.breedId)} defaultCategory={bulkAddModal.defaultCategory||"anac"} onSave={saveBulkGoats} onClose={()=>setBulkAddModal(null)} currentUser={currentUser}/>}
       {selHealthRec&&<HealthDetailModal
         record={selHealthRec}
         goat={goats.find(g=>g.id===selHealthRec.goatId)||null}
@@ -4031,26 +3634,7 @@ function App(){
         </div>
       )}
 
-      {/* Ses tercihi sorusu */}
-      {showSoundPrompt && (
-        <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,.6)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
-          <div style={{background:"#FFFFFF",backdropFilter:"blur(24px)",WebkitBackdropFilter:"blur(24px)",borderRadius:24,padding:28,width:"100%",maxWidth:320,textAlign:"center",border:"1px solid rgba(212,175,55,.2)",boxShadow:"0 24px 80px rgba(0,0,0,.7)"}}>
-            <div style={{fontSize:40,marginBottom:12}}>🔊</div>
-            <div style={{fontWeight:700,fontSize:17,color:"#111827",marginBottom:8}}>Sesli Karşılama</div>
-            <div style={{fontSize:13,color:"#6B7280",marginBottom:20,lineHeight:1.6}}>
-              Her girişinizde sizi sesli karşılayalım mı?
-            </div>
-            <div style={{display:"flex",gap:10}}>
-              <button onClick={()=>saveSoundPref(false)} style={{...S.btnOutline,flex:1,padding:12,fontSize:13,borderColor:theme.primary,color:theme.primary}}>
-                Hayır
-              </button>
-              <button onClick={()=>saveSoundPref(true)} style={{...S.btnPrimary,flex:1,padding:12,fontSize:13,background:theme.primary}}>
-                Evet!
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+
 
       {archiveConfirm && (
         <div onClick={()=>setArchiveConfirm(null)} style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,.55)",zIndex:999,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
@@ -4124,7 +3708,7 @@ function App(){
               <div style={{display:"flex",alignItems:"center",gap:14}}>
                 
                 <div style={{flex:1}}>
-                  <div style={{fontSize:9,color:"var(--primary,#8B5CF6)",fontWeight:700,letterSpacing:"2px",textTransform:"uppercase",marginBottom:3}}>Üç Kule Tarım ve Hayvancılık</div>
+                  <div style={{fontSize:9,color:"var(--primary,#8B5CF6)",fontWeight:700,letterSpacing:"2px",textTransform:"uppercase",marginBottom:3}}>ÜÇ KULE TARIM VE HAYVANCILIK</div>
                   <div style={{fontSize:15,fontWeight:800,color:"#1A1A2E",letterSpacing:"-.3px",lineHeight:1.3}}> <span style={{color:theme.primary}}>Hayvancılık</span></div>
                   <div style={{display:"flex",gap:5,marginTop:7}}>
                     <button onClick={function(){setShowAcil(true);}} style={{background:"linear-gradient(135deg,#DC2626,#EF4444)",color:"#fff",fontSize:13,fontWeight:800,padding:"8px 18px",borderRadius:12,border:"none",cursor:"pointer",WebkitAppearance:"none",animation:"pulse 1.5s infinite",letterSpacing:".5px",boxShadow:"0 3px 12px rgba(220,38,38,.4)",display:"flex",alignItems:"center",gap:6}}>🚨 ACİL YARDIM</button>
@@ -4142,7 +3726,7 @@ function App(){
             <div style={{marginBottom:12}}>
               <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
                 {[
-                  ["goats","🐑","Sürü","rgba(16,185,129,.1)","#10B981"],
+                  ["goats","🐐","Sürü","rgba(16,185,129,.1)","#10B981"],
                   ["health","🩺","Sağlık","rgba(14,165,233,.12)","#0EA5E9"],
                   ["births","🐣","Doğum","rgba(var(--primary-rgb),.1)",theme.primary],
                   ["deaths","💀","Ölüm","rgba(239,68,68,.08)","#EF4444"],
@@ -4231,7 +3815,7 @@ function App(){
               <div>
                 <div style={{display:"flex",background:"#FFFFFF",borderRadius:10,marginBottom:8,border:"1px solid rgba(212,175,55,.12)",overflow:"hidden"}}>
                   <button onClick={()=>setCatTab("anac")} style={{...S.tabBtn,background:catTab==="anac"?"#3D5A25":"transparent",color:catTab==="anac"?"#fff":"#8c8c7e",fontSize:12}}>
-                    🐑 Anaçlar ({goats.filter(g=>g.breed===breed.id&&g.category==="anac"&&!g.archived).length})
+                    🐐 Anaçlar ({goats.filter(g=>g.breed===breed.id&&g.category==="anac"&&!g.archived).length})
                   </button>
                   <button onClick={()=>setCatTab("koc")} style={{...S.tabBtn,background:catTab==="koc"?"#7C3AED":"transparent",color:catTab==="koc"?"#fff":"#8c8c7e",fontSize:12}}>🐑 Koç</button>
                   <button onClick={()=>setCatTab("kuzu")} style={{...S.tabBtn,background:catTab==="kuzu"?"#D97706":"transparent",color:catTab==="kuzu"?"#fff":"#8c8c7e",fontSize:12}}>
@@ -4240,6 +3824,7 @@ function App(){
                 </div>
                 {!isGuest && <div style={{display:"flex",gap:6,marginBottom:8}}>
                   <button onClick={()=>setAddGoatModal({breedId:breed.id, defaultCategory:catTab})} style={{...S.btnPrimary,flex:1,fontSize:13}}>+ {catTab==="anac"?"Anaç":catTab==="kuzu"?"Kuzu":"Koç"} Ekle</button>
+                  <button onClick={()=>setBulkAddModal({breedId:breed.id, defaultCategory:catTab})} style={{...S.btnOutline,flex:1,fontSize:12}}>📋 Toplu Ekle</button>
                 </div>}
                 {goats.filter(g=>g.breed===breed.id&&g.category===catTab&&!g.archived).map((g,i)=>(
                   <div key={g.id} className="anim-fade"
@@ -4273,7 +3858,7 @@ function App(){
                 {!isGuest && <button onClick={()=>setHModal({breedId:breed.id})} style={{...S.btnPrimary,width:"100%",marginBottom:10,fontSize:13}}>+ Sağlık Kaydı Ekle</button>}
                 {healthRecs.filter(h=>h.breed===breed.id&&!h.closed).length===0 && <Empty text="Aktif sağlık kaydı yok"/>}
                 {/* Kategori bazlı gruplama */}
-                {[["anac","🐑 Anaç"],["kuzu","🐏 Kuzu"]].map(([cat, catLabel])=>{
+                {[["anac","🐐 Anaç"],["kuzu","🐏 Kuzu"]].map(([cat, catLabel])=>{
                   const catRecs = [...healthRecs].filter(h=>{
                     if(h.breed!==breed.id||h.closed) return false;
                     const g=goats.find(x=>x.id===h.goatId);
@@ -4357,7 +3942,7 @@ function App(){
                     <button onClick={()=>{setPage("goats");setSelBreed(b.id);setBreedTab("saglik");}} style={{...S.btnSm,background:"rgba(255,255,255,.5)",color:b.color,fontSize:10}}>Detay →</button>
                   </div>
                   {/* Anaç ve Oğlak kategorileri */}
-                  {[["anac","🐑 Anaç"],["kuzu","🐏 Kuzu"]].map(([cat,catLabel])=>{
+                  {[["anac","🐐 Anaç"],["kuzu","🐏 Kuzu"]].map(([cat,catLabel])=>{
                     const catRecs = breedRecs.filter(h=>{
                       const g=goats.find(x=>x.id===h.goatId);
                       const hCat = h.category || g?.category || "anac";
@@ -4461,6 +4046,8 @@ function App(){
               </div>
             </div>
 
+            {/* Ses Ayarı */}
+                        )}
 
             {/* Renk Teması */}
             {!isGuest && (
@@ -4531,7 +4118,7 @@ function App(){
       {/* Alt Nav - ana sayfa hariç */}
       {page!=="home" && (
         <div style={S.nav}>
-          {[["home","🏠","Ana"],["health","🩺","Sağlık"],["vaccines","💉","Aşı"],["game","🐑","Oyun"]].map(([k,ic,l])=>(
+          {[["home","🏠","Ana"],["health","🩺","Sağlık"],["vaccines","💉","Aşı"],["game","🐐","Oyun"]].map(([k,ic,l])=>(
             <button key={k} onClick={()=>navigate(k)} style={{...S.ghost,display:"flex",flexDirection:"column",alignItems:"center",gap:2,padding:"6px 20px",color:page===k?theme.primary:"#9CA3AF",transition:"color .2s"}}>
               <span style={{fontSize:20}}>{ic}</span>
               <span style={{fontSize:9,fontWeight:page===k?700:500,letterSpacing:".3px",textTransform:"uppercase",color:page===k?theme.primary:"#9CA3AF"}}>{l}</span>
