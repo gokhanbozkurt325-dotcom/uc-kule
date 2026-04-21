@@ -905,11 +905,7 @@ function HealthModal({ goats, breedFilter, onSave, onClose, preGoatId, currentUs
         </button>
       ))}
     </div>
-    <FL>Kategori *</FL>
-    <div style={{display:"flex",gap:6}}>
-      <button onClick={()=>setCategory("anac")} style={{flex:1,padding:"9px 0",borderRadius:8,border:`1.5px solid ${category==="anac"?"#059669":"#E5E7EB"}`,background:category==="anac"?"#D1FAE5":"#fff",color:category==="anac"?"#065F46":"#8c8c7e",fontWeight:category==="anac"?700:400,fontSize:13,cursor:"pointer"}}>🐑 Anaç</button>
-      <button onClick={()=>setCategory("kuzu")} style={{flex:1,padding:"9px 0",borderRadius:8,border:`1.5px solid ${category==="kuzu"?"#D97706":"#E5E7EB"}`,background:category==="kuzu"?"#FEF3C7":"#fff",color:category==="kuzu"?"#92400E":"#8c8c7e",fontWeight:category==="kuzu"?700:400,fontSize:13,cursor:"pointer"}}>🐏 Kuzu</button>
-    </div>
+    
     <EarTagInput devletNo={devletNo} setDevletNo={setDevletNo} isletmeNo={isletmeNo} setIsletmeNo={setIsletmeNo}/>
     <FL>Tarih *</FL>
     <input type="date" value={date} onChange={e=>setDate(e.target.value)} style={S.input}/>
@@ -1053,8 +1049,7 @@ function AddGoatModal({ breed, defaultCategory, onSave, onClose, currentUser }) 
     <EarTagInput devletNo={devletNo} setDevletNo={setDevletNo} isletmeNo={isletmeNo} setIsletmeNo={setIsletmeNo}/>
     <FL>Cinsiyet</FL>
     <select value={gender} onChange={e=>setGender(e.target.value)} style={S.select}><option value="dişi">Dişi</option><option value="erkek">Erkek</option></select>
-    <FL>Kategori</FL>
-    <select value={category} onChange={e=>setCategory(e.target.value)} style={S.select}><option value="anac">Anaç</option><option value="kuzu">Kuzu</option></select>
+
     <FL>Doğum Tarihi</FL>
     <input type="date" value={birthDate} onChange={e=>setBirthDate(e.target.value)} style={S.input}/>
     <FL>Ağırlık (kg)</FL>
@@ -1377,12 +1372,7 @@ function DeathsPage({ deaths, currentUser, onDelete }) {
           <div style={{display:"flex",gap:6,marginBottom:4}}>
             {BREEDS.map(b=><button key={b.id} onClick={()=>setBreed(b.id)} style={{flex:1,padding:"7px 0",borderRadius:8,border:`1.5px solid ${breed===b.id?b.color:"#6B7280"}`,background:breed===b.id?b.bg:"#fff",color:breed===b.id?b.color:"#9CA3AF",fontWeight:breed===b.id?700:400,fontSize:11,cursor:"pointer"}}>{b.emoji} {b.name}</button>)}
           </div>
-          <FL>Kategori *</FL>
-          <div style={{display:"flex",gap:6}}>
-            <button onClick={()=>setCategory("anac")} style={{flex:1,padding:"8px 0",borderRadius:8,border:`1.5px solid ${category==="anac"?"#059669":"#E5E7EB"}`,background:category==="anac"?"#D1FAE5":"#fff",color:category==="anac"?"#065F46":"#8c8c7e",fontWeight:category==="anac"?700:400,fontSize:13,cursor:"pointer"}}>🐑 Anaç</button>
-            <button onClick={()=>setCategory("kuzu")} style={{flex:1,padding:"8px 0",borderRadius:8,border:`1.5px solid ${category==="kuzu"?"#D97706":"#E5E7EB"}`,background:category==="kuzu"?"#FEF3C7":"#fff",color:category==="kuzu"?"#92400E":"#8c8c7e",fontWeight:category==="kuzu"?700:400,fontSize:13,cursor:"pointer"}}>🐏 Kuzu</button>
-            <button onClick={()=>setCategory("koc")} style={{flex:1,padding:"8px 0",borderRadius:8,border:`1.5px solid ${category==="koc"?"#7C3AED":"#E5E7EB"}`,background:category==="koc"?"#EDE9FE":"#fff",color:category==="koc"?"#5B21B6":"#8c8c7e",fontWeight:category==="koc"?700:400,fontSize:13,cursor:"pointer"}}>🐑 Koç</button>
-          </div>
+          
           <EarTagInput devletNo={devletNo} setDevletNo={setDevletNo} isletmeNo={isletmeNo} setIsletmeNo={setIsletmeNo}/>
           <div style={{display:"flex",gap:8}}>
             <div style={{flex:1}}>
@@ -1557,12 +1547,7 @@ function GroupTreatmentsPage({ groupTreatments, treatmentDaysData, currentUser, 
           <div style={{display:"flex",gap:6}}>
             {BREEDS.map(b=><button key={b.id} onClick={()=>setBreed(b.id)} style={{flex:1,padding:"7px 0",borderRadius:8,border:`1.5px solid ${breed===b.id?b.color:"#6B7280"}`,background:breed===b.id?b.bg:"#fff",color:breed===b.id?b.color:"#9CA3AF",fontWeight:breed===b.id?700:400,fontSize:11,cursor:"pointer"}}>{b.emoji} {b.name}</button>)}
           </div>
-          <FL>Kategori *</FL>
-          <div style={{display:"flex",gap:6}}>
-            <button onClick={()=>setCategory("anac")} style={{flex:1,padding:"8px 0",borderRadius:8,border:`1.5px solid ${category==="anac"?"#059669":"#E5E7EB"}`,background:category==="anac"?"#D1FAE5":"#fff",color:category==="anac"?"#065F46":"#8c8c7e",fontWeight:category==="anac"?700:400,fontSize:13,cursor:"pointer"}}>🐑 Anaç</button>
-            <button onClick={()=>setCategory("kuzu")} style={{flex:1,padding:"8px 0",borderRadius:8,border:`1.5px solid ${category==="kuzu"?"#D97706":"#E5E7EB"}`,background:category==="kuzu"?"#FEF3C7":"#fff",color:category==="kuzu"?"#92400E":"#8c8c7e",fontWeight:category==="kuzu"?700:400,fontSize:13,cursor:"pointer"}}>🐏 Kuzu</button>
-            <button onClick={()=>setCategory("koc")} style={{flex:1,padding:"8px 0",borderRadius:8,border:`1.5px solid ${category==="koc"?"#7C3AED":"#E5E7EB"}`,background:category==="koc"?"#EDE9FE":"#fff",color:category==="koc"?"#5B21B6":"#8c8c7e",fontWeight:category==="koc"?700:400,fontSize:13,cursor:"pointer"}}>🐑 Koç</button>
-          </div>
+          
           <FL>Grup Adı *</FL>
           <input value={groupName} onChange={e=>setGroupName(e.target.value)} placeholder="örn: Grup A, Doğu Ağıl" style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit"}}/>
           <FL>Hastalık / Durum *</FL>
@@ -2051,8 +2036,9 @@ function ReportsPage({reports, goats, logs, vaccineReports, births, deaths, grou
             {/* Kategori */}
             <select value={suruCat} onChange={e=>setSuruCat(e.target.value)} style={{...S.select,flex:1,minWidth:90,fontSize:12}}>
               <option value="all">Anaç + Oğlak</option>
-              <option value="anac">🐐 Anaç</option>
+              <option value="anac">🐑 Anaç</option>
               <option value="kuzu">🐏 Kuzu</option>
+              <option value="koc">🐑 Koç</option>
             </select>
             {/* Cinsiyet */}
             <select value={suruGender} onChange={e=>setSuruGender(e.target.value)} style={{...S.select,flex:1,minWidth:90,fontSize:12}}>
@@ -3858,7 +3844,7 @@ function App(){
                 {!isGuest && <button onClick={()=>setHModal({breedId:breed.id})} style={{...S.btnPrimary,width:"100%",marginBottom:10,fontSize:13}}>+ Sağlık Kaydı Ekle</button>}
                 {healthRecs.filter(h=>h.breed===breed.id&&!h.closed).length===0 && <Empty text="Aktif sağlık kaydı yok"/>}
                 {/* Kategori bazlı gruplama */}
-                {[["anac","🐐 Anaç"],["kuzu","🐏 Kuzu"]].map(([cat, catLabel])=>{
+                {[["anac","🐑 Anaç"],["kuzu","🐏 Kuzu"],["koc","🐑 Koç"]].map(([cat, catLabel])=>{
                   const catRecs = [...healthRecs].filter(h=>{
                     if(h.breed!==breed.id||h.closed) return false;
                     const g=goats.find(x=>x.id===h.goatId);
@@ -3942,7 +3928,7 @@ function App(){
                     <button onClick={()=>{setPage("goats");setSelBreed(b.id);setBreedTab("saglik");}} style={{...S.btnSm,background:"rgba(255,255,255,.5)",color:b.color,fontSize:10}}>Detay →</button>
                   </div>
                   {/* Anaç ve Oğlak kategorileri */}
-                  {[["anac","🐐 Anaç"],["kuzu","🐏 Kuzu"]].map(([cat,catLabel])=>{
+                  {[["anac","🐑 Anaç"],["kuzu","🐏 Kuzu"],["koc","🐑 Koç"]].map(([cat,catLabel])=>{
                     const catRecs = breedRecs.filter(h=>{
                       const g=goats.find(x=>x.id===h.goatId);
                       const hCat = h.category || g?.category || "anac";
