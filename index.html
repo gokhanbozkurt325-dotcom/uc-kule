@@ -3570,6 +3570,22 @@ function App(){
 
   if(loading) return <Loading/>;
 
+  React.useEffect(() => {
+    try {
+      var pinMap = {};
+      var keys = Object.keys(localStorage);
+      for(var i=0; i<keys.length; i++){
+        var k = keys[i];
+        if(k && k.indexOf("uk_p_") === 0){
+          pinMap[k.slice(5).split("_").join(" ")] = localStorage.getItem(k);
+        }
+      }
+      if(Object.keys(pinMap).length > 0){
+        setUserPins(function(p){ return Object.assign({}, p, pinMap); });
+      }
+    } catch(e){}
+  }, []);
+
   return (
     <div style={{...S.app,"--primary":theme.primary,"--primary-rgb":theme.primaryRgb||"139,92,246",background:theme.bg||"#F5F0FF",color:theme.textColor||"#1A1A2E"}}>
       <AcilModal show={showAcil} onClose={function(){setShowAcil(false);}}/>
@@ -4206,21 +4222,5 @@ try {
 }
 </script>
 </body>
-</html>  // PIN'leri localStorage'dan yükle
-  React.useEffect(() => {
-    try {
-      var pinMap = {};
-      var keys = Object.keys(localStorage);
-      for(var i=0; i<keys.length; i++){
-        var k = keys[i];
-        if(k && k.indexOf("uk_p_") === 0){
-          pinMap[k.slice(5).split("_").join(" ")] = localStorage.getItem(k);
-        }
-      }
-      if(Object.keys(pinMap).length > 0){
-        setUserPins(function(p){ return Object.assign({}, p, pinMap); });
-      }
-    } catch(e){}
-  }, []);
+</html>
 
-  
