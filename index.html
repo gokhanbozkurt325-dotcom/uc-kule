@@ -836,6 +836,7 @@ function HealthModal({ goats, breedFilter, onSave, onClose, preGoatId, currentUs
   const [category, setCategory] = useState("anac");
   const [devletNo, setDevletNo] = useState("");
   const [isletmeNo, setIsletmeNo] = useState("");
+  const earTag = (devletNo||"") + (isletmeNo ? "|||"+isletmeNo : "");
   const [date,setDate]=useState(todayISO());
   const [condition,setCondition]=useState("");
   const [condCustom,setCondCustom]=useState("");
@@ -862,8 +863,6 @@ function HealthModal({ goats, breedFilter, onSave, onClose, preGoatId, currentUs
 
   const save = async () => {
     if(!breed){setErr("Irk seçiniz");return;}
-    const cleanTag = earTag.replace(/^TR--?$/,"").trim();
-    if(!cleanTag || cleanTag==="TR-" || cleanTag==="TR--"){setErr("Küpe no giriniz");return;}
     const cond = condition==="Diğer"?condCustom.trim():condition;
     if(!cond){setErr("Hastalık/durum giriniz");return;}
     setSaving(true);
@@ -1023,6 +1022,7 @@ function AddGoatModal({ breed, defaultCategory, onSave, onClose, currentUser }) 
   const [name,setName]=useState("");
   const [devletNo, setDevletNo] = useState("");
   const [isletmeNo, setIsletmeNo] = useState("");
+  const earTag = (devletNo||"") + (isletmeNo ? "|||"+isletmeNo : "");
   const [gender,setGender]=useState("dişi");
   const [category,setCategory]=useState(defaultCategory||"anac");
   const [birthDate,setBirthDate]=useState("");
@@ -1034,7 +1034,6 @@ function AddGoatModal({ breed, defaultCategory, onSave, onClose, currentUser }) 
 
   const save=async()=>{
     if(!name){setErr("İsim giriniz");return;}
-    // Küpe opsiyonel
     setSaving(true);
     const g={id:"g"+Date.now(),name,earTag,gender,breed:breed.id,category,birthDate,weight,color,motherTag:"",fatherTag:"",abortHistory:"hayır",reproductionStatus:"",kidCount:"0",notes,abortDetails:"",archived:false,archiveReason:""};
     const {error}=await sb.from("goats").insert(fromGoat(g));
@@ -1246,6 +1245,7 @@ function DeathsPage({ deaths, currentUser, onDelete }) {
   const [category, setCategory] = useState("anac");
   const [devletNo, setDevletNo] = useState("");
   const [isletmeNo, setIsletmeNo] = useState("");
+  const earTag = (devletNo||"") + (isletmeNo ? "|||"+isletmeNo : "");
   const [deathDate, setDeathDate] = useState(todayISO());
   const [deathTime, setDeathTime] = useState("");
   const [cause, setCause] = useState("");
@@ -1314,6 +1314,7 @@ function DeathsPage({ deaths, currentUser, onDelete }) {
     if(false){setErr("Küpe no giriniz");return;}
     if(!cause){setErr("Ölüm sebebi seçiniz");return;}
     setSaving(true);
+    const earTag = (devletNo||"") + (isletmeNo ? "|||"+isletmeNo : "");
     const finalCause = cause==="Diğer" ? causeCustom.trim() : cause;
     if(editDeath){
       await sb.from("deaths").update({breed,category,ear_tag:earTag.trim(),death_date:deathDate,death_time:deathTime||null,cause:finalCause,notes:notes||null}).eq("id",editDeath.id);
