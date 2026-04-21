@@ -3367,7 +3367,6 @@ function App(){
     if(pinStep==="enter"){
       if(currentPin===next){
         setPinInput("");
-        try{localStorage.setItem("uk_p_"+person.replace(/ /g,"_"),next);}catch(e){}
         handleLoginSuccess(person);
         setPinError("");
       } else {
@@ -3400,7 +3399,6 @@ function App(){
         setPinInput("");
         setPinStep("enter");
         setPinError("");
-        try{localStorage.setItem("uk_p_"+person.replace(/ /g,"_"),next);}catch(e){}
         handleLoginSuccess(person);
       } else {
         setPinError("PIN'ler eşleşmedi! Tekrar deneyin.");
@@ -3570,22 +3568,6 @@ function App(){
 
   if(loading) return <Loading/>;
 
-  React.useEffect(() => {
-    try {
-      var pinMap = {};
-      var keys = Object.keys(localStorage);
-      for(var i=0; i<keys.length; i++){
-        var k = keys[i];
-        if(k && k.indexOf("uk_p_") === 0){
-          var name = k.slice(5).split("_").join(" ");
-          var val = localStorage.getItem(k);
-          if(name && val) pinMap[name] = val;
-        }
-      }
-      var count = Object.keys(pinMap).length;
-      if(count > 0) setUserPins(pinMap);
-    } catch(e){}
-  }, []);
 
   return (
     <div style={{...S.app,"--primary":theme.primary,"--primary-rgb":theme.primaryRgb||"139,92,246",background:theme.bg||"#F5F0FF",color:theme.textColor||"#1A1A2E"}}>
