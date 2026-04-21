@@ -3202,23 +3202,6 @@ function App(){
   const [theme, setTheme] = useState(DEFAULT_THEME);
   const [showThemePrompt, setShowThemePrompt] = useState(false);
 
-  // Ses çal
-  const playWelcome = (userName, recs) => {
-    try {
-      const audio = new Audio("https://gokhanbozkurt325-dotcom.github.io/uc-kule/welcome.mp4");
-      audio.volume = 1;
-      audio.play().catch(()=>{
-        // iOS'ta otomatik çalma engellenirse kullanıcı etkileşimi bekle
-        const unlock = () => {
-          audio.play().catch(()=>{});
-          document.removeEventListener("touchstart", unlock);
-          document.removeEventListener("click", unlock);
-        };
-        document.addEventListener("touchstart", unlock, {once:true});
-        document.addEventListener("click", unlock, {once:true});
-      });
-    } catch(e) {}
-  };
 
   // Giriş sonrası ses tercihi kontrol
   const handleLoginSuccess = async (userName) => {
@@ -3231,27 +3214,20 @@ function App(){
         const t = COLOR_THEMES.find(x=>x.id===data.theme_id);
         setTheme(t||DEFAULT_THEME);
       }
-      // Ses
-      if(data && data.sound_enabled === true) {
-        setTimeout(()=>playWelcome(userName, healthRecs), 800);
-      } else if(data && data.sound_enabled === false) {
-        // kapalı
-      } else {
-        // İlk giriş — önce tema seç, sonra ses sor
+      // Tema
+      if(!data || !data.theme_id) {
         setTimeout(()=>setShowThemePrompt(true), 500);
       }
-    } catch(e) {
-      setTimeout(()=>setShowThemePrompt(true), 500);
-    }
+    } catch(e) {}
   };
 
   const saveSoundPref = async (enabled) => {
     const userName = currentUser;
-    setShowSoundPrompt(false);
+    ;
     try {
       await sb.from("user_preferences").upsert({id:"sp_"+userName.replace(/\s/g,"_"), user_name:userName, sound_enabled:enabled, theme_id:theme.id});
     } catch(e){}
-    if(enabled) setTimeout(()=>playWelcome(userName, healthRecs), 300);
+    if(enabled) 
   };
 
   const saveTheme = async (t, showSoundNext) => {
@@ -3260,7 +3236,7 @@ function App(){
     try {
       await sb.from("user_preferences").upsert({id:"sp_"+currentUser.replace(/\s/g,"_"), user_name:currentUser, theme_id:t.id});
     } catch(e){}
-    if(showSoundNext) setTimeout(()=>setShowSoundPrompt(true), 300);
+    if(showSoundNext) setTimeout(()=>, 300);
   };
 
   useEffect(()=>{
