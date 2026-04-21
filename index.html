@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-title" content="Hayvancılık"/>
   <meta name="theme-color" content="#F5F0FF"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230A0A0F'/><text y='.9em' font-size='80' x='10'>🐐</text></svg>"/>
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230A0A0F'/><text y='.9em' font-size='80' x='10'>🐑</text></svg>"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
@@ -64,7 +64,7 @@ const COLOR_THEMES = [
   { id:"gunbatimi", name:"Gün Batımı",   emoji:"🌅", primary:"#E65100", primaryRgb:"230,81,0",    bg:"#FFF3E0", cardBg:"rgba(255,255,255,.93)", headerBg:"rgba(255,255,255,.85)", navBg:"rgba(255,255,255,.92)", textColor:"#1A1A2E", subColor:"#4B5563", photo:"https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&q=80", overlay:"rgba(255,255,255,.68)" },
   { id:"cayir",     name:"Yeşil Çayır",  emoji:"🌾", primary:"#558B2F", primaryRgb:"85,139,47",   bg:"#F9FBE7", cardBg:"rgba(255,255,255,.93)", headerBg:"rgba(255,255,255,.85)", navBg:"rgba(255,255,255,.92)", textColor:"#1A1A2E", subColor:"#4B5563", photo:"https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80", overlay:"rgba(255,255,255,.70)" },
   { id:"kar",       name:"Karlı Dağ",    emoji:"❄️", primary:"#0277BD", primaryRgb:"2,119,189",   bg:"#E1F5FE", cardBg:"rgba(255,255,255,.93)", headerBg:"rgba(255,255,255,.85)", navBg:"rgba(255,255,255,.92)", textColor:"#1A1A2E", subColor:"#4B5563", photo:"https://images.unsplash.com/photo-1491555103944-7c647fd857e6?w=800&q=80", overlay:"rgba(255,255,255,.68)" },
-  { id:"keci",      name:"Keçi Çiftliği",emoji:"🐐", primary:"#6D4C41", primaryRgb:"109,76,65",   bg:"#EFEBE9", cardBg:"rgba(255,255,255,.93)", headerBg:"rgba(255,255,255,.85)", navBg:"rgba(255,255,255,.92)", textColor:"#1A1A2E", subColor:"#4B5563", photo:"https://images.unsplash.com/photo-1533318087102-b3ad366ed041?w=800&q=80", overlay:"rgba(255,255,255,.68)" },
+  { id:"keci",      name:"Keçi Çiftliği",emoji:"🐑", primary:"#6D4C41", primaryRgb:"109,76,65",   bg:"#EFEBE9", cardBg:"rgba(255,255,255,.93)", headerBg:"rgba(255,255,255,.85)", navBg:"rgba(255,255,255,.92)", textColor:"#1A1A2E", subColor:"#4B5563", photo:"https://images.unsplash.com/photo-1533318087102-b3ad366ed041?w=800&q=80", overlay:"rgba(255,255,255,.68)" },
   // Spor kulüpleri
   { id:"galatasaray", name:"Galatasaray",emoji:"🔴🟡",primary:"#B22222", primaryRgb:"178,34,34",   bg:"#FFF5F5", cardBg:"rgba(255,255,255,.93)", headerBg:"rgba(255,255,255,.85)", navBg:"rgba(255,255,255,.92)", textColor:"#1A1A2E", subColor:"#4B5563", photo:"https://images.unsplash.com/photo-1551958219-acbc595b6b23?w=800&q=80", overlay:"rgba(255,255,255,.72)" },
   { id:"fenerbahce",  name:"Fenerbahçe", emoji:"🟡🔵",primary:"#003087", primaryRgb:"0,48,135",    bg:"#F0F4FF", cardBg:"rgba(255,255,255,.93)", headerBg:"rgba(255,255,255,.85)", navBg:"rgba(255,255,255,.92)", textColor:"#1A1A2E", subColor:"#4B5563", photo:"https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80", overlay:"rgba(255,255,255,.72)" },
@@ -169,7 +169,7 @@ function GameHub() {
 
 function GoatMatchGame() {
   const PAIRS = [
-    {id:"a",emoji:"🐐",name:"Keçi"},{id:"b",emoji:"🐑",name:"Koyun"},
+    {id:"a",emoji:"🐑",name:"Koyun"},{id:"b",emoji:"🐑",name:"Koyun"},
     {id:"c",emoji:"🦙",name:"Lama"},{id:"d",emoji:"🐏",name:"Koç"},
     {id:"e",emoji:"🐮",name:"İnek"},{id:"f",emoji:"🐷",name:"Domuz"},
     {id:"g",emoji:"🐔",name:"Tavuk"},{id:"h",emoji:"🦆",name:"Ördek"},
@@ -237,7 +237,7 @@ function GoatMatchGame() {
   return (
     <div className="anim-fade">
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-        <h2 style={{margin:0,fontSize:17,fontWeight:800,color:"#111827"}}>🐐 Keçi Eşleştirme</h2>
+        <h2 style={{margin:0,fontSize:17,fontWeight:800,color:"#111827"}}>🐑 Koyun Eşleştirme</h2>
         <button onClick={doReset} style={{background:"rgba(var(--primary-rgb),.1)",color:"var(--primary,#8B5CF6)",border:"none",borderRadius:10,padding:"6px 12px",fontWeight:600,fontSize:12,cursor:"pointer"}}>🔄 Yeniden</button>
       </div>
       <div style={{display:"flex",gap:8,marginBottom:8}}>
@@ -564,10 +564,10 @@ const CLOSE_REASONS = ["İyileşti","Tedavi Tamamlandı","Kronik Hastalık","Hay
 const DEMO_USERS = [
   { id:"u1", name:"Danışman",       emoji:"👨‍💼", role:"yonetici", members:["İsmail AKAR"],  pin:null },
   { id:"u2", name:"İşletme Sahibi", emoji:"🏠",  role:"yonetici", members:["Perçin İLDAY"], pin:null },
-  { id:"u3", name:"Çoban 1",        emoji:"🐐",  role:"coban",    members:[],               pin:null },
-  { id:"u4", name:"Çoban 2",        emoji:"🐐",  role:"coban",    members:[],               pin:null },
-  { id:"u5", name:"Çoban 3",        emoji:"🐐",  role:"coban",    members:[],               pin:null },
-  { id:"u6", name:"Çoban 4",        emoji:"🐐",  role:"coban",    members:[],               pin:null },
+  { id:"u3", name:"Çoban 1",        emoji:"🐑",  role:"coban",    members:[],               pin:null },
+  { id:"u4", name:"Çoban 2",        emoji:"🐑",  role:"coban",    members:[],               pin:null },
+  { id:"u5", name:"Çoban 3",        emoji:"🐑",  role:"coban",    members:[],               pin:null },
+  { id:"u6", name:"Çoban 4",        emoji:"🐑",  role:"coban",    members:[],               pin:null },
   { id:"u7", name:"Misafir",        emoji:"👁",  role:"misafir",  members:[],               pin:null },
 ];
 
@@ -998,7 +998,7 @@ function VaccineModal({ breed, goats, onSave, onClose, currentUser }) {
     <FL>Hayvan Seçimi ({selected.size}/{breedGoats.length} seçili)</FL>
     {anacList.length>0&&<>
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}}>
-        <span style={{fontSize:11,fontWeight:700,color:"#10B981"}}>🐐 Anaçlar</span>
+        <span style={{fontSize:11,fontWeight:700,color:"#10B981"}}>🐑 Anaçlar</span>
         <button onClick={()=>toggleGroup(anacList)} style={{...S.btnSm,background:"rgba(74,124,63,.2)",color:"#10B981",fontSize:10}}>{anacList.every(g=>selected.has(g.id))?"Tümünü Kaldır":"Tümünü Seç"}</button>
       </div>
       {anacList.map(g=><GoatRow key={g.id} g={g}/>)}
@@ -1034,7 +1034,7 @@ function AddGoatModal({ breed, defaultCategory, onSave, onClose, currentUser }) 
 
   const save=async()=>{
     if(!name){setErr("İsim giriniz");return;}
-    if(!earTag){setErr("Küpe no giriniz");return;}
+    // Küpe opsiyonel
     setSaving(true);
     const g={id:"g"+Date.now(),name,earTag,gender,breed:breed.id,category,birthDate,weight,color,motherTag:"",fatherTag:"",abortHistory:"hayır",reproductionStatus:"",kidCount:"0",notes,abortDetails:"",archived:false,archiveReason:""};
     const {error}=await sb.from("goats").insert(fromGoat(g));
@@ -1042,10 +1042,10 @@ function AddGoatModal({ breed, defaultCategory, onSave, onClose, currentUser }) 
     onSave(g);
   };
 
-  return <ModalWrap title={`${breed.emoji} ${breed.name} — Hayvan Ekle`} onClose={onClose}>
+  return <ModalWrap title={`${breed.emoji} ${breed.name} — ${category==="anac"?"🐑 Anaç":category==="kuzu"?"🐏 Kuzu":"🐑 Koç"} Ekle`} onClose={onClose}>
     {err&&<ErrBox msg={err}/>}
     <FL>İsim *</FL>
-    <input value={name} onChange={e=>setName(e.target.value)} placeholder="Keçi adı" style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit"}}/>
+    <input value={name} onChange={e=>setName(e.target.value)} placeholder="Hayvan adı" style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit"}}/>
     <EarTagInput devletNo={devletNo} setDevletNo={setDevletNo} isletmeNo={isletmeNo} setIsletmeNo={setIsletmeNo}/>
     <FL>Cinsiyet</FL>
     <select value={gender} onChange={e=>setGender(e.target.value)} style={S.select}><option value="dişi">Dişi</option><option value="erkek">Erkek</option></select>
@@ -1101,8 +1101,8 @@ const ACTIVITY_ICONS = {
   saglik_eklendi:   {ic:"🩺", bg:"#FFF0EE", label:"Sağlık kaydı eklendi"},
   saglik_guncellendi: {ic:"✏️", bg:"#FFF8EC", label:"Sağlık kaydı güncellendi"},
   saglik_sonlandi:  {ic:"✅", bg:"#E3F0DC", label:"Sağlık kaydı sonlandırıldı"},
-  hayvan_eklendi:   {ic:"🐐", bg:"#E3F0DC", label:"Yeni hayvan eklendi"},
-  toplu_hayvan:     {ic:"🐐", bg:"#E3F0DC", label:"Toplu hayvan eklendi"},
+  hayvan_eklendi:   {ic:"🐑", bg:"#E3F0DC", label:"Yeni hayvan eklendi"},
+  toplu_hayvan:     {ic:"🐑", bg:"#E3F0DC", label:"Toplu hayvan eklendi"},
   arsivlendi:       {ic:"📦", bg:"#F2F0EA", label:"Hayvan arşivlendi"},
   asi_uygulandı:    {ic:"💉", bg:"#E6F1FB", label:"Aşı uygulandı"},
   asi_takvim:       {ic:"📅", bg:"#E6F1FB", label:"Aşı takvime eklendi"},
@@ -1235,7 +1235,7 @@ function AnnouncementBox({ announcements, setAnnouncements, currentUser, vaccine
   );
 }
 
-function Empty({text}){return <div style={{textAlign:"center",padding:40,color:"#9CA3AF",fontSize:13,fontWeight:500}}><div style={{fontSize:36,marginBottom:10,opacity:.5}}>🐐</div>{text}</div>;}
+function Empty({text}){return <div style={{textAlign:"center",padding:40,color:"#9CA3AF",fontSize:13,fontWeight:500}}><div style={{fontSize:36,marginBottom:10,opacity:.5}}>🐑</div>{text}</div>;}
 const DEATH_CAUSES = ["Pnömoni","Doğum komplikasyonu","Yaralanma","Zehirlenme","Parazit","Bilinmiyor","Diğer"];
 
 function DeathsPage({ deaths, currentUser, onDelete }) {
@@ -1426,7 +1426,7 @@ function DeathsPage({ deaths, currentUser, onDelete }) {
           <div key={d.id} style={{...S.card,padding:12,marginBottom:8,border:"1.5px solid #F5C0BA"}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"start"}}>
               <div style={{flex:1}}>
-                <div style={{fontSize:11,fontWeight:700,color:b?.color,marginBottom:2}}>{b?.emoji} {b?.name} · {d.category==="kuzu"?"🐏 Kuzu":"🐐 Anaç"} · 📅 {fmt(d.deathDate)}{d.deathTime?` · ⏰ ${d.deathTime}`:""}</div>
+                <div style={{fontSize:11,fontWeight:700,color:b?.color,marginBottom:2}}>{b?.emoji} {b?.name} · {d.category==="kuzu"?"🐏 Kuzu":"🐑 Anaç"} · 📅 {fmt(d.deathDate)}{d.deathTime?` · ⏰ ${d.deathTime}`:""}</div>
                 <div style={{fontWeight:700,fontSize:14,color:"#1A1A2E"}}>Küpe: {d.earTag}</div>
                 <div style={{fontSize:12,color:"#EF4444",marginTop:2,fontWeight:600}}>☠️ {d.cause}</div>
                 {d.notes&&<div style={{fontSize:11,color:"#6B7280",fontStyle:"italic",marginTop:2}}>📝 {d.notes}</div>}
@@ -1587,7 +1587,7 @@ function GroupTreatmentsPage({ groupTreatments, treatmentDaysData, currentUser, 
           <div key={gt.id} style={{...S.card,padding:12,marginBottom:8,border:`1.5px solid ${b?.color}22`}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"start",marginBottom:6}}>
               <div style={{flex:1}}>
-                <div style={{fontSize:11,fontWeight:700,color:b?.color,marginBottom:2}}>{b?.emoji} {b?.name} · {gt.category==="kuzu"?"🐏 Kuzu":"🐐 Anaç"} · {gt.groupName}{gt.startDate?` · 📅 ${fmt(gt.startDate)}`:""}</div>
+                <div style={{fontSize:11,fontWeight:700,color:b?.color,marginBottom:2}}>{b?.emoji} {b?.name} · {gt.category==="kuzu"?"🐏 Kuzu":"🐑 Anaç"} · {gt.groupName}{gt.startDate?` · 📅 ${fmt(gt.startDate)}`:""}</div>
                 <div style={{fontWeight:700,fontSize:14,color:"#1A1A2E"}}>{gt.condition}</div>
                 {gt.treatment&&<div style={{fontSize:12,color:"#1F2937",marginTop:2}}>💊 {gt.treatment}</div>}
                 {days.length>0&&<div style={{fontSize:10,background:"rgba(74,124,63,.2)",color:"#10B981",display:"inline-block",padding:"2px 8px",borderRadius:6,marginTop:4,fontWeight:600}}>
@@ -2003,7 +2003,7 @@ function ReportsPage({reports, goats, logs, vaccineReports, births, deaths, grou
       <h2 style={{...S.title,marginBottom:12}}>📊 Raporlar</h2>
 
       <div style={{display:"flex",gap:6,marginBottom:12,overflowX:"auto",paddingBottom:4}}>
-        {[["suru","🐐","Sürü","#4A7C3F"],["saglik","🩺","Sağlık","#BE3B31"],["asi","💉","Aşı","#2873A8"],["dogum","🐣","Doğum","#B8750A"],["olum","💀","Ölüm","#555"],["toplu","🏥","Toplu Tx","#4A7C3F"]].map(([k,ic,l,c])=>(
+        {[["suru","🐑","Sürü","#4A7C3F"],["saglik","🩺","Sağlık","#BE3B31"],["asi","💉","Aşı","#2873A8"],["dogum","🐣","Doğum","#B8750A"],["olum","💀","Ölüm","#555"],["toplu","🏥","Toplu Tx","#4A7C3F"]].map(([k,ic,l,c])=>(
           <button key={k} onClick={()=>setMainTab(k)} style={{...S.btnSm,background:mainTab===k?c:"#F2F0EA",color:mainTab===k?"#fff":"#555",whiteSpace:"nowrap",padding:"7px 14px",fontSize:12}}>
             {ic} {l}
           </button>
@@ -2063,7 +2063,7 @@ function ReportsPage({reports, goats, logs, vaccineReports, births, deaths, grou
                 <div style={{flex:1}}>
                   <div style={{fontWeight:700,fontSize:13,color:"#1A1A2E"}}>{g.name}</div>
                   <div style={{fontSize:11,color:"#9CA3AF"}}>
-                    🏷 {g.earTag} · {g.gender==="erkek"?"♂ Erkek":"♀ Dişi"} · {g.category==="anac"?"🐐 Anaç":"🐏 Kuzu"}
+                    🏷 {g.earTag} · {g.gender==="erkek"?"♂ Erkek":"♀ Dişi"} · {g.category==="anac"?"🐑 Anaç":"🐏 Kuzu"}
                   </div>
                 </div>
                 <span style={{fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:8,background:b?.bg,color:b?.color}}>{b?.name}</span>
@@ -2215,7 +2215,7 @@ function ReportsPage({reports, goats, logs, vaccineReports, births, deaths, grou
               <div key={d.id} style={{...S.card,padding:12,marginBottom:8,border:"1.5px solid #F5C0BA"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"start"}}>
                   <div>
-                    <div style={{fontSize:11,fontWeight:700,color:br?.color}}>{br?.emoji} {br?.name} · {d.category==="kuzu"?"🐏 Kuzu":"🐐 Anaç"} · 📅 {fmt(d.deathDate)}{d.deathTime?` · ⏰ ${d.deathTime}`:""}</div>
+                    <div style={{fontSize:11,fontWeight:700,color:br?.color}}>{br?.emoji} {br?.name} · {d.category==="kuzu"?"🐏 Kuzu":"🐑 Anaç"} · 📅 {fmt(d.deathDate)}{d.deathTime?` · ⏰ ${d.deathTime}`:""}</div>
                     <div style={{fontWeight:700,fontSize:14,color:"#1A1A2E"}}>Küpe: {d.earTag}</div>
                     <div style={{fontSize:12,color:"#EF4444",fontWeight:600}}>☠️ {d.cause}</div>
                     {d.notes&&<div style={{fontSize:11,color:"#6B7280",fontStyle:"italic"}}>📝 {d.notes}</div>}
@@ -2242,7 +2242,7 @@ function ReportsPage({reports, goats, logs, vaccineReports, births, deaths, grou
               <div key={gt.id} style={{...S.card,padding:12,marginBottom:8,border:`1.5px solid ${br?.color}22`}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"start"}}>
                   <div style={{flex:1}}>
-                    <div style={{fontSize:11,fontWeight:700,color:br?.color}}>{br?.emoji} {br?.name} · {gt.category==="kuzu"?"🐏 Kuzu":"🐐 Anaç"} · {gt.groupName}</div>
+                    <div style={{fontSize:11,fontWeight:700,color:br?.color}}>{br?.emoji} {br?.name} · {gt.category==="kuzu"?"🐏 Kuzu":"🐑 Anaç"} · {gt.groupName}</div>
                     <div style={{fontWeight:700,fontSize:14,color:"#1A1A2E"}}>{gt.condition}</div>
                     {gt.treatment&&<div style={{fontSize:12,color:"#1F2937"}}>💊 {gt.treatment}</div>}
                     {gt.startDate&&<div style={{fontSize:11,color:"#9CA3AF"}}>📅 {fmt(gt.startDate)}</div>}
@@ -2427,7 +2427,7 @@ function CreateGroupModal({ breed, goats, onSave, onClose, currentUser }) {
     <div style={{fontSize:11,color:"#9CA3AF",marginBottom:8}}>{selected.size} hayvan seçildi</div>
     {breedGoats.length===0 && <div style={{fontSize:12,color:"#6B7280",textAlign:"center",padding:8,background:"#F5F5F5",borderRadius:8}}>Bu ırkta henüz hayvan yok</div>}
     {anacList.length>0&&<>
-      <div style={{fontSize:11,fontWeight:700,color:"#10B981",marginBottom:4,marginTop:4}}>🐐 Anaçlar</div>
+      <div style={{fontSize:11,fontWeight:700,color:"#10B981",marginBottom:4,marginTop:4}}>🐑 Anaçlar</div>
       {anacList.map(g=><GoatRow key={g.id} g={g}/>)}
     </>}
     {oglakList.length>0&&<>
@@ -2860,7 +2860,7 @@ function GoatDetail({goat,goats,healthRecs,vaccines,logs,treatmentDays,onAddHeal
           <PillTag bg={goat.category==="anac"?"#E3F0DC":"#FFF4E6"} color={goat.category==="anac"?"#3D5A25":"#8B5A1B"} text={goat.category==="anac"?"Anaç":"Kuzu"}/>
           {goat.archived && <PillTag bg="#FFF0EE" color="#BE3B31" text="ARŞİVLENDİ"/>}
         </div>
-        <div style={{fontSize:40,margin:"4px 0"}}>{goat.category==="anac"?"🐐":"🍼"}</div>
+        <div style={{fontSize:40,margin:"4px 0"}}>{goat.category==="anac"?"🐑":"🍼"}</div>
         <h2 style={{margin:"2px 0",fontSize:22,fontWeight:900,color:"#1A1A2E"}}>{goat.name}</h2>
         <div style={{fontSize:12,color:"#9CA3AF"}}>🏷 {goat.earTag} · {goat.gender==="dişi"?"♀ Dişi":"♂ Erkek"} · {getAge(goat.birthDate)}</div>
       </div>
@@ -3654,7 +3654,7 @@ function App(){
 
       <div style={{...S.header,background:theme.headerBg||"rgba(255,255,255,.88)",position:"relative",zIndex:10}}>
         {page==="home"
-          ? <span style={{fontSize:20}}>🐐</span>
+          ? <span style={{fontSize:20}}>🐑</span>
           : <button onClick={goBack} style={{...S.ghost,color:"rgba(212,175,55,.7)",fontSize:26,padding:"0 8px 0 0",lineHeight:1,fontWeight:300}}>‹</button>
         }
         <div style={{flex:1}}>
@@ -3725,7 +3725,7 @@ function App(){
             <div style={{marginBottom:12}}>
               <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
                 {[
-                  ["goats","🐐","Sürü","rgba(16,185,129,.1)","#10B981"],
+                  ["goats","🐑","Sürü","rgba(16,185,129,.1)","#10B981"],
                   ["health","🩺","Sağlık","rgba(14,165,233,.12)","#0EA5E9"],
                   ["births","🐣","Doğum","rgba(var(--primary-rgb),.1)",theme.primary],
                   ["deaths","💀","Ölüm","rgba(239,68,68,.08)","#EF4444"],
@@ -3753,7 +3753,7 @@ function App(){
         {/* GOATS BREED SELECT */}
         {page==="goats"&&!selBreed && (
           <div className="anim-fade">
-            <h2 style={{...S.title,marginBottom:16,color:theme.primary,fontSize:13,fontWeight:600,letterSpacing:"2px",textTransform:"uppercase"}}>🐐 Sürü Seçin</h2>
+            <h2 style={{...S.title,marginBottom:16,color:theme.primary,fontSize:13,fontWeight:600,letterSpacing:"2px",textTransform:"uppercase"}}>🐑 Sürü Seçin</h2>
             {BREEDS.map((b,i)=>{
               const bs=breedStats[b.id];
               return (
@@ -3773,7 +3773,7 @@ function App(){
                       <div style={{fontWeight:700,fontSize:18,color:"#1A1A2E",marginBottom:2,letterSpacing:"-.3px"}}>{b.name}</div>
                       <div style={{fontSize:11,color:"#9CA3AF",marginBottom:10}}>{b.desc}</div>
                       <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-                        <span style={{background:`${b.color}18`,color:b.color,fontSize:10,fontWeight:600,padding:"3px 10px",borderRadius:8,border:`1px solid ${b.color}25`}}>🐐 {bs.anac} Anaç</span>
+                        <span style={{background:`${b.color}18`,color:b.color,fontSize:10,fontWeight:600,padding:"3px 10px",borderRadius:8,border:`1px solid ${b.color}25`}}>🐑 {bs.anac} Anaç</span>
                         <span style={{background:"rgba(184,96,42,.15)",color:"#E8975A",fontSize:10,fontWeight:600,padding:"3px 10px",borderRadius:8,border:"1px solid rgba(184,96,42,.2)"}}>🍼 {bs.oglak} Oğlak</span>
                         {bs.sick>0&&<span style={{background:"rgba(239,68,68,.1)",color:"#EF4444",fontSize:10,fontWeight:600,padding:"3px 10px",borderRadius:8,border:"1px solid rgba(190,59,49,.2)"}}>🏥 {bs.sick} Tedavi</span>}
                       </div>
@@ -3805,7 +3805,7 @@ function App(){
               </div>
             </div>
             <div style={{display:"flex",background:"#FFFFFF",borderRadius:12,marginBottom:10,border:"1px solid rgba(212,175,55,.12)",overflow:"hidden"}}>
-              {[["surü","🐐 Sürü"],["saglik","🩺 Sağlık"],["asi","💉 Aşı"]].map(([k,l])=>(
+              {[["surü","🐑 Sürü"],["saglik","🩺 Sağlık"],["asi","💉 Aşı"]].map(([k,l])=>(
                 <button key={k} onClick={()=>setBreedTab(k)} style={{...S.tabBtn,background:breedTab===k?breed.color:"transparent",color:breedTab===k?"#fff":"#8c8c7e",fontSize:12}}>{l}</button>
               ))}
             </div>
@@ -4113,7 +4113,7 @@ function App(){
       {/* Alt Nav - ana sayfa hariç */}
       {page!=="home" && (
         <div style={S.nav}>
-          {[["home","🏠","Ana"],["health","🩺","Sağlık"],["vaccines","💉","Aşı"],["game","🐐","Oyun"]].map(([k,ic,l])=>(
+          {[["home","🏠","Ana"],["health","🩺","Sağlık"],["vaccines","💉","Aşı"],["game","🐑","Oyun"]].map(([k,ic,l])=>(
             <button key={k} onClick={()=>navigate(k)} style={{...S.ghost,display:"flex",flexDirection:"column",alignItems:"center",gap:2,padding:"6px 20px",color:page===k?theme.primary:"#9CA3AF",transition:"color .2s"}}>
               <span style={{fontSize:20}}>{ic}</span>
               <span style={{fontSize:9,fontWeight:page===k?700:500,letterSpacing:".3px",textTransform:"uppercase",color:page===k?theme.primary:"#9CA3AF"}}>{l}</span>
