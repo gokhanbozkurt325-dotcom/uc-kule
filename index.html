@@ -719,7 +719,7 @@ function HealthDetailModal({ record, goat, logs, treatmentDays, onUpdate, onClos
           Aynı tedavi devam ediyor (değişiklik yok)
         </label>
       </div>
-      <textarea value={treatment} onChange={e=>{setTreatment(e.target.value);setTreatmentChanged(true);} placeholder="İlaç, doz, işlem..." rows={3} style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit",resize:"none"}}/>
+      <textarea value={treatment} onChange={e=>{setTreatment(e.target.value);setTreatmentChanged(true);}} placeholder="İlaç, doz, işlem..." rows={3} style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit",resize:"none"}}/>
       <FL>Notlar</FL>
       <textarea value={notes} onChange={e=>setNotes(e.target.value)} placeholder="Not ekle..." rows={2} style={{width:"100%",padding:"10px 12px",borderRadius:10,border:"1.5px solid #E5E7EB",fontSize:13,boxSizing:"border-box",outline:"none",color:"#111827",display:"block",fontFamily:"inherit",resize:"none"}}/>
       <div style={{display:"flex",gap:8,marginTop:4}}>
@@ -4046,8 +4046,6 @@ function App(){
               </div>
             </div>
 
-            {/* Ses Ayarı */}
-                        )}
 
             {/* Renk Teması */}
             {!isGuest && (
