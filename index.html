@@ -3224,7 +3224,6 @@ function App(){
   const handleLoginSuccess = async (userName) => {
     setCurrentUser(userName);
     setShowLogin(false);
-    try { localStorage.setItem("uc_kule_user", userName); } catch(e) {}
     try {
       const {data} = await sb.from("user_preferences").select("*").eq("user_name", userName).single();
       // Tema yükle
@@ -3538,7 +3537,7 @@ function App(){
                 <div>
                   <div style={{fontWeight:700,fontSize:15,color:"#1A1A2E"}}>{selPerson}</div>
                   <div style={{fontSize:11,color:"#9CA3AF"}}>
-                    {pinStep==="enter"?"PIN kodunuzu girin":pinStep==="create"?"Yeni PIN oluşturun (4 hane)":"PIN'i tekrar girin"}
+                    {pinStep==="enter"?"PIN kodunuzu girin":pinStep==="enter"?"Şifrenizi girin":pinStep==="create"?"İlk girişte şifre oluşturun (4 hane)":"Şifreyi tekrar girin"}
                   </div>
                 </div>
               </div>
@@ -4101,7 +4100,7 @@ function App(){
                 {currentUser==="Misafir"?"Sadece Görüntüleme":DEMO_USERS.find(u=>u.name===currentUser)?.members?.join(" · ") || (DEMO_USERS.find(u=>u.name===currentUser)?.role==="veteriner"?"Veteriner Hekim":DEMO_USERS.find(u=>u.members&&u.members.includes(currentUser))?"Şef Yönetici":currentUser)}
               </div>
               <div style={{marginTop:12}}>
-                <button onClick={()=>{try{localStorage.removeItem("uc_kule_user");}catch(e){} setShowLogin(true);}} style={{...S.btnOutline,color:"#EF4444",borderColor:"#BE3B31",fontSize:13}}>🚪 Çıkış Yap</button>
+                <button onClick={()=>{setShowLogin(true);}} style={{...S.btnOutline,color:"#EF4444",borderColor:"#BE3B31",fontSize:13}}>🚪 Çıkış Yap</button>
               </div>
             </div>
 
