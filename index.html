@@ -32,8 +32,8 @@
     #root{background:#F5F0FF;min-height:100vh;}
   </style>
 </head>
-<body>
-<div id="root"></div>
+<body style="background:#F5F0FF;margin:0;">
+<div id="root" style="background:#F5F0FF;min-height:100vh;"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
@@ -3317,16 +3317,7 @@ function App(){
   const [pinConfirm, setPinConfirm] = useState("");
   const [pinStep, setPinStep] = useState("enter"); // "enter" | "create" | "confirm"
   const [pinError, setPinError] = useState("");
-  const [userPins, setUserPins] = useState(()=>{
-    try {
-      const m={};
-      for(let i=0;i<localStorage.length;i++){
-        const k=localStorage.key(i);
-        if(k&&k.startsWith("uk_p_")) m[k.slice(5).replace(/_/g," ")]=localStorage.getItem(k);
-      }
-      return m;
-    }catch(e){return {};}
-  }); // {personName: hashedPin}
+  const [userPins, setUserPins] = useState({}); // {personName: hashedPin}
 
   useEffect(()=>{
     const loadAnn = async()=>{
@@ -4215,4 +4206,21 @@ try {
 }
 </script>
 </body>
-</html>
+</html>  // PIN'leri localStorage'dan yükle
+  React.useEffect(() => {
+    try {
+      var pinMap = {};
+      var keys = Object.keys(localStorage);
+      for(var i=0; i<keys.length; i++){
+        var k = keys[i];
+        if(k && k.indexOf("uk_p_") === 0){
+          pinMap[k.slice(5).split("_").join(" ")] = localStorage.getItem(k);
+        }
+      }
+      if(Object.keys(pinMap).length > 0){
+        setUserPins(function(p){ return Object.assign({}, p, pinMap); });
+      }
+    } catch(e){}
+  }, []);
+
+  
