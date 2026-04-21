@@ -78,7 +78,7 @@ function WeatherWidget() {
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(()=>{
-    fetch("https://api.open-meteo.com/v1/forecast?latitude=37.7167&longitude=30.2833&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,apparent_temperature&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=Europe%2FIstanbul&forecast_days=4")
+    fetch("https://api.open-meteo.com/v1/forecast?latitude=37.1500&longitude=29.6833&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,apparent_temperature&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=Europe%2FIstanbul&forecast_days=4")
       .then(r=>r.json())
       .then(data=>{
         const cur=data.current;
@@ -3224,6 +3224,7 @@ function App(){
   const handleLoginSuccess = async (userName) => {
     setCurrentUser(userName);
     setShowLogin(false);
+    try { localStorage.setItem("uc_kule_user", userName); } catch(e) {}
     try {
       const {data} = await sb.from("user_preferences").select("*").eq("user_name", userName).single();
       // Tema yükle
@@ -3309,6 +3310,18 @@ function App(){
 
   const [announcements, setAnnouncements] = useState([]);
   const [showAcil, setShowAcil] = useState(false);
+
+  // Kayıtlı kullanıcı otomatik giriş
+  React.useEffect(() => {
+    try {
+      const saved = localStorage.getItem("uc_kule_user");
+      if(saved && saved !== "Misafir") {
+        setCurrentUser(saved);
+        setShowLogin(false);
+      }
+    } catch(e) {}
+  }, []);
+
   const [selUser, setSelUser] = useState(null);
   const [selPerson, setSelPerson] = useState(null); // kişi seçimi (vardiya üyesi veya Vet/Şef)
   const [pinInput, setPinInput] = useState("");
@@ -3799,24 +3812,22 @@ function App(){
 
             {breedTab==="surü" && (
               <div>
-                <div style={{display:"flex",background:"#FFFFFF",borderRadius:10,marginBottom:8,border:"1px solid rgba(212,175,55,.12)",overflow:"hidden"}}>
-                  <button onClick={()=>setCatTab("anac")} style={{...S.tabBtn,background:catTab==="anac"?"#3D5A25":"transparent",color:catTab==="anac"?"#fff":"#8c8c7e",fontSize:12}}>
-                    🐐 Anaçlar ({goats.filter(g=>g.breed===breed.id&&g.category==="anac"&&!g.archived).length})
+                {!isGuest && <div style={{display:"flex",gap:6,marginBottom:10}}>
+                  <button onClick={()=>setAddGoatModal({breedId:breed.id, defaultCategory:"anac"})} style={{flex:1,padding:"9px 4px",borderRadius:10,border:"1.5px solid #059669",background:"#D1FAE5",color:"#065F46",fontWeight:700,fontSize:12,cursor:"pointer",WebkitAppearance:"none",textAlign:"center"}}>
+                    🐑 Anaç Ekle<br/><span style={{fontSize:10,fontWeight:400,color:"#059669"}}>({goats.filter(g=>g.breed===breed.id&&g.category==="anac"&&!g.archived).length} adet)</span>
                   </button>
-                  <button onClick={()=>setCatTab("koc")} style={{...S.tabBtn,background:catTab==="koc"?"#7C3AED":"transparent",color:catTab==="koc"?"#fff":"#8c8c7e",fontSize:12}}>🐑 Koç</button>
-                  <button onClick={()=>setCatTab("kuzu")} style={{...S.tabBtn,background:catTab==="kuzu"?"#D97706":"transparent",color:catTab==="kuzu"?"#fff":"#8c8c7e",fontSize:12}}>
-                    🐏 Kuzular ({goats.filter(g=>g.breed===breed.id&&g.category==="kuzu"&&!g.archived).length})
+                  <button onClick={()=>setAddGoatModal({breedId:breed.id, defaultCategory:"kuzu"})} style={{flex:1,padding:"9px 4px",borderRadius:10,border:"1.5px solid #D97706",background:"#FEF3C7",color:"#92400E",fontWeight:700,fontSize:12,cursor:"pointer",WebkitAppearance:"none",textAlign:"center"}}>
+                    🐏 Kuzu Ekle<br/><span style={{fontSize:10,fontWeight:400,color:"#D97706"}}>({goats.filter(g=>g.breed===breed.id&&g.category==="kuzu"&&!g.archived).length} adet)</span>
                   </button>
-                </div>
-                {!isGuest && <div style={{display:"flex",gap:6,marginBottom:8}}>
-                  <button onClick={()=>setAddGoatModal({breedId:breed.id, defaultCategory:catTab})} style={{...S.btnPrimary,flex:1,fontSize:13}}>+ {catTab==="anac"?"Anaç":catTab==="kuzu"?"Kuzu":"Koç"} Ekle</button>
-                  <button onClick={()=>setBulkAddModal({breedId:breed.id, defaultCategory:catTab})} style={{...S.btnOutline,flex:1,fontSize:12}}>📋 Toplu Ekle</button>
+                  <button onClick={()=>setAddGoatModal({breedId:breed.id, defaultCategory:"koc"})} style={{flex:1,padding:"9px 4px",borderRadius:10,border:"1.5px solid #7C3AED",background:"#EDE9FE",color:"#5B21B6",fontWeight:700,fontSize:12,cursor:"pointer",WebkitAppearance:"none",textAlign:"center"}}>
+                    🐑 Koç Ekle<br/><span style={{fontSize:10,fontWeight:400,color:"#7C3AED"}}>({goats.filter(g=>g.breed===breed.id&&g.category==="koc"&&!g.archived).length} adet)</span>
+                  </button>
                 </div>}
-                {goats.filter(g=>g.breed===breed.id&&g.category===catTab&&!g.archived).map((g,i)=>(
+                {goats.filter(g=>g.breed===breed.id&&!g.archived).map((g,i)=>(
                   <div key={g.id} className="anim-fade"
                     style={{...S.card,padding:"10px 12px",marginBottom:5,display:"flex",alignItems:"center",gap:10,animationDelay:`${i*.04}s`}}>
                     <div onClick={()=>{setSelGoat(g.id);setDetailTab("info");}} style={{width:40,height:40,borderRadius:"50%",background:breed.bg,display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0,cursor:"pointer"}}>
-                      {catTab==="anac"?"🐐":"🍼"}
+                      {g.category==="anac"?"🐑":g.category==="koc"?"🐑":"🐏"}
                     </div>
                     <div onClick={()=>{setSelGoat(g.id);setDetailTab("info");}} style={{flex:1,minWidth:0,cursor:"pointer"}}>
                       <div style={{fontWeight:700,fontSize:14,color:"#1A1A2E"}}>{g.name}</div>
@@ -4028,7 +4039,7 @@ function App(){
                 {currentUser==="Misafir"?"Sadece Görüntüleme":DEMO_USERS.find(u=>u.name===currentUser)?.members?.join(" · ") || (DEMO_USERS.find(u=>u.name===currentUser)?.role==="veteriner"?"Veteriner Hekim":DEMO_USERS.find(u=>u.members&&u.members.includes(currentUser))?"Şef Yönetici":currentUser)}
               </div>
               <div style={{marginTop:12}}>
-                <button onClick={()=>{setShowLogin(true);}} style={{...S.btnOutline,color:"#EF4444",borderColor:"#BE3B31",fontSize:13}}>🚪 Çıkış Yap</button>
+                <button onClick={()=>{try{localStorage.removeItem("uc_kule_user");}catch(e){} setShowLogin(true);}} style={{...S.btnOutline,color:"#EF4444",borderColor:"#BE3B31",fontSize:13}}>🚪 Çıkış Yap</button>
               </div>
             </div>
 
