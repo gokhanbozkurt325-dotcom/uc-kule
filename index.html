@@ -3223,11 +3223,9 @@ function App(){
 
   const saveSoundPref = async (enabled) => {
     const userName = currentUser;
-    ;
     try {
       await sb.from("user_preferences").upsert({id:"sp_"+userName.replace(/\s/g,"_"), user_name:userName, sound_enabled:enabled, theme_id:theme.id});
     } catch(e){}
-    if(enabled) 
   };
 
   const saveTheme = async (t, showSoundNext) => {
@@ -3236,7 +3234,6 @@ function App(){
     try {
       await sb.from("user_preferences").upsert({id:"sp_"+currentUser.replace(/\s/g,"_"), user_name:currentUser, theme_id:t.id});
     } catch(e){}
-    if(showSoundNext) setTimeout(()=>, 300);
   };
 
   useEffect(()=>{
