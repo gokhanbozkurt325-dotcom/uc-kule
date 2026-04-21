@@ -3577,12 +3577,13 @@ function App(){
       for(var i=0; i<keys.length; i++){
         var k = keys[i];
         if(k && k.indexOf("uk_p_") === 0){
-          pinMap[k.slice(5).split("_").join(" ")] = localStorage.getItem(k);
+          var name = k.slice(5).split("_").join(" ");
+          var val = localStorage.getItem(k);
+          if(name && val) pinMap[name] = val;
         }
       }
-      if(Object.keys(pinMap).length > 0){
-        setUserPins(function(p){ return Object.assign({}, p, pinMap); });
-      }
+      var count = Object.keys(pinMap).length;
+      if(count > 0) setUserPins(pinMap);
     } catch(e){}
   }, []);
 
